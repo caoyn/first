@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.dao.TbSysUserroledetailMapper">
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysUserroledetail">
+    <id column="USERROLEID" jdbcType="VARCHAR" property="userroleid" />
+    <result column="USERID" jdbcType="VARCHAR" property="userid" />
+    <result column="ROLEID" jdbcType="VARCHAR" property="roleid" />
+    <result column="PERMISSIONID" jdbcType="VARCHAR" property="permissionid" />
+    <result column="OPERID" jdbcType="VARCHAR" property="operid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    USERROLEID, USERID, ROLEID, PERMISSIONID, OPERID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_userroledetail
+    where USERROLEID = #{userroleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_sys_userroledetail
+    where USERROLEID = #{userroleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysUserroledetail">
+    insert into tb_sys_userroledetail (USERROLEID, USERID, ROLEID, 
+      PERMISSIONID, OPERID)
+    values (CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),#{userroleid,jdbcType=VARCHAR}), #{userid,jdbcType=VARCHAR}, #{roleid,jdbcType=VARCHAR}, 
+      #{permissionid,jdbcType=VARCHAR}, #{operid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysUserroledetail">
+    insert into tb_sys_userroledetail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userroleid != null">
+        USERROLEID,
+      </if>
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="roleid != null">
+        ROLEID,
+      </if>
+      <if test="permissionid != null">
+        PERMISSIONID,
+      </if>
+      <if test="operid != null">
+        OPERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userroleid != null">
+       CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),#{userroleid,jdbcType=VARCHAR}),
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null">
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionid != null">
+        #{permissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="operid != null">
+        #{operid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysUserroledetail">
+    update tb_sys_userroledetail
+    <set>
+      <if test="userid != null">
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null">
+        ROLEID = #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionid != null">
+        PERMISSIONID = #{permissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="operid != null">
+        OPERID = #{operid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USERROLEID = #{userroleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysUserroledetail">
+    update tb_sys_userroledetail
+    set USERID = #{userid,jdbcType=VARCHAR},
+      ROLEID = #{roleid,jdbcType=VARCHAR},
+      PERMISSIONID = #{permissionid,jdbcType=VARCHAR},
+      OPERID = #{operid,jdbcType=VARCHAR}
+    where USERROLEID = #{userroleid,jdbcType=VARCHAR}
+  </update>
+    
+  <!-- 获得最大的id -->
+  <select id="getMaxId" resultType="java.lang.String">
+  	SELECT MAX(USERROLEID) FROM tb_sys_userroledetail WHERE USERROLEID like CONCAT ( DATE_FORMAT(CURDATE(),'%Y%m%d'),'%')
+  </select>
+  <!-- 删除某用户的所有用户角色的数据 -->
+  <delete id="deleteUserData" parameterType="java.lang.String">
+    delete from tb_sys_userroledetail
+    where USERID = #{_parameter,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 查看某用户的权限信息  -->
+  <select id="userRoleDetailData" resultMap="BaseResultMap" parameterType="com.icss.bean.TbSysUserroledetail">
+  	SELECT DISTINCT <include refid="Base_Column_List" /> FROM tb_sys_userroledetail 
+  	WHERE USERID = #{userid,jdbcType=VARCHAR} and PERMISSIONID =#{permissionid,jdbcType=VARCHAR} ORDER BY ROLEID
+  </select>
+  
+  <!-- 查看角色为电话销售的员工 -->
+  <select id="selectallsale" resultMap="BaseResultMap" >
+  		select  u.USERNAME  ROLEID ,u. USERID 
+		FROM tb_sys_user u	
+		LEFT JOIN tb_sys_userroledetail d ON d.USERID=u.userid
+		LEFT JOIN tb_sys_role r ON r.roleid=d.roleid
+		where r.ROLENAME='电话销售'
+  </select>
+  
+  <!-- 获得审批角色  -->
+  <select id="getApproveRole" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT d.USERID,ROLEID FROM tb_sys_dept d
+	INNER JOIN (SELECT * from tb_sys_userroledetail GROUP BY roleid,userid 
+	) ud ON d.userid = ud.userid and d.deptid in ${_parameter}
+  </select>
+  
+</mapper>

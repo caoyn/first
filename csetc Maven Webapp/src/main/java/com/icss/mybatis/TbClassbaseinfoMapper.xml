@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbClassbaseinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbClassbaseinfo" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="CLASSID" property="classid" jdbcType="VARCHAR" />
+    <result column="CLASSDESC" property="classdesc" jdbcType="VARCHAR" />
+    <result column="OPENDATE" property="opendate" jdbcType="DATE" />
+    <result column="OPENNUMBER" property="opennumber" jdbcType="INTEGER" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CLASSID, CLASSDESC, OPENDATE, OPENNUMBER, USERID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_classbaseinfo
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_classbaseinfo
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbClassbaseinfo" >
+    insert into tb_classbaseinfo (ID, CLASSID, CLASSDESC, 
+      OPENDATE, OPENNUMBER, USERID
+      )
+    values (#{id,jdbcType=INTEGER}, #{classid,jdbcType=VARCHAR}, #{classdesc,jdbcType=VARCHAR}, 
+      #{opendate,jdbcType=DATE}, #{opennumber,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbClassbaseinfo" >
+    insert into tb_classbaseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="classid != null" >
+        CLASSID,
+      </if>
+      <if test="classdesc != null" >
+        CLASSDESC,
+      </if>
+      <if test="opendate != null" >
+        OPENDATE,
+      </if>
+      <if test="opennumber != null" >
+        OPENNUMBER,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="classid != null" >
+        #{classid,jdbcType=VARCHAR},
+      </if>
+      <if test="classdesc != null" >
+        #{classdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        #{opendate,jdbcType=DATE},
+      </if>
+      <if test="opennumber != null" >
+        #{opennumber,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbClassbaseinfo" >
+    update tb_classbaseinfo
+    <set >
+      <if test="classid != null" >
+        CLASSID = #{classid,jdbcType=VARCHAR},
+      </if>
+      <if test="classdesc != null" >
+        CLASSDESC = #{classdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="opendate != null" >
+        OPENDATE = #{opendate,jdbcType=DATE},
+      </if>
+      <if test="opennumber != null" >
+        OPENNUMBER = #{opennumber,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbClassbaseinfo" >
+    update tb_classbaseinfo
+    set CLASSID = #{classid,jdbcType=VARCHAR},
+      CLASSDESC = #{classdesc,jdbcType=VARCHAR},
+      OPENDATE = #{opendate,jdbcType=DATE},
+      OPENNUMBER = #{opennumber,jdbcType=INTEGER},
+      USERID = #{userid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

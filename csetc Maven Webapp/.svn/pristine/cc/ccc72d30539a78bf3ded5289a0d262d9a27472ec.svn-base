@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbPromocodeMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbPromocode" >
+    <id column="PROMOID" property="promoid" jdbcType="VARCHAR" />
+    <result column="RPOMOCODE" property="rpomocode" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="EXPIRETIME" property="expiretime" jdbcType="DATE" />
+    <result column="MAXUSE" property="maxuse" jdbcType="INTEGER" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+    <result column="USED" property="used" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="RULES" property="rules" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PROMOID, RPOMOCODE, USERID, CREATETIME, EXPIRETIME, MAXUSE, COUNT, USED, STATUS, 
+    RULES
+  </sql>
+  
+  <!-- 根据序号从数据库表格tb_promocode查询数据 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_promocode
+    where PROMOID = #{promoid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 从数据库表格tb_promocode查询所有数据 -->
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from tb_promocode
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_promocode
+    where PROMOID = #{promoid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbPromocode" >
+    insert into tb_promocode (PROMOID, RPOMOCODE, USERID, 
+      CREATETIME, EXPIRETIME, MAXUSE, 
+      COUNT, USED, STATUS, 
+      RULES)
+    values ('', #{rpomocode,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+     now(), #{expiretime,jdbcType=DATE}, #{maxuse,jdbcType=INTEGER}, 
+     0, 0, #{status,jdbcType=VARCHAR}, 
+      #{rules,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbPromocode" >
+    insert into tb_promocode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="promoid != null" >
+        PROMOID,
+      </if>
+      <if test="rpomocode != null" >
+        RPOMOCODE,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="expiretime != null" >
+        EXPIRETIME,
+      </if>
+      <if test="maxuse != null" >
+        MAXUSE,
+      </if>
+      <if test="count != null" >
+        COUNT,
+      </if>
+      <if test="used != null" >
+        USED,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="rules != null" >
+        RULES,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="promoid != null" >
+        #{promoid,jdbcType=VARCHAR},
+      </if>
+      <if test="rpomocode != null" >
+        #{rpomocode,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiretime != null" >
+        #{expiretime,jdbcType=DATE},
+      </if>
+      <if test="maxuse != null" >
+        #{maxuse,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="used != null" >
+        #{used,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="rules != null" >
+        #{rules,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbPromocode" >
+    update tb_promocode
+    <set >
+      <if test="rpomocode != null" >
+        RPOMOCODE = #{rpomocode,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiretime != null" >
+        EXPIRETIME = #{expiretime,jdbcType=DATE},
+      </if>
+      <if test="maxuse != null" >
+        MAXUSE = #{maxuse,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        COUNT = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="used != null" >
+        USED = #{used,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="rules != null" >
+        RULES = #{rules,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PROMOID = #{promoid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbPromocode" >
+    update tb_promocode
+    set RPOMOCODE = #{rpomocode,jdbcType=VARCHAR},
+      USERID = #{userid,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      EXPIRETIME = #{expiretime,jdbcType=DATE},
+      MAXUSE = #{maxuse,jdbcType=INTEGER},
+      COUNT = #{count,jdbcType=INTEGER},
+      USED = #{used,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      RULES = #{rules,jdbcType=VARCHAR}
+    where PROMOID = #{promoid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据促销码查看促销规则 -->
+  <select id="getPromotionRule" parameterType="com.icss.bean.TbPromocode" resultType="java.lang.String">
+  	SELECT RULES FROM tb_promocode WHERE RPOMOCODE = #{rpomocode,jdbcType=VARCHAR} and locate(#{rules,jdbcType=VARCHAR},rules) 
+	AND `STATUS` = 1 AND COUNT &lt; MAXUSE AND EXPIRETIME &gt; NOW()
+  </select>
+  
+  <!-- 查看所有的促销码数据    -->
+  <select id="getAllPromocodeData" resultMap="BaseResultMap">
+  	SELECT PROMOID, RPOMOCODE, p.USERID, p.CREATETIME, EXPIRETIME, MAXUSE, COUNT, USED, p.STATUS, RULES, USERNAME
+    FROM tb_promocode p 
+  	INNER JOIN tb_sys_user u ON u.USERID = p.USERID
+  </select>
+  
+  <!-- 查看某促销码是否存在  -->
+  <select id="existPromocode" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select COUNT(*) FROM tb_promocode where RPOMOCODE = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 修改促销码状态 -->
+  <update id="changePromocodeStatus" parameterType="com.icss.bean.TbPromocode">
+  	UPDATE tb_promocode SET STATUS = #{status,jdbcType=VARCHAR} WHERE PROMOID in ${promoid}
+  </update>
+</mapper>

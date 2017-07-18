@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbOrderChangedMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbOrderChanged" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OEDERID" property="oederid" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="DEPTID" property="deptid" jdbcType="VARCHAR" />
+    <result column="CHANGEUSERID" property="changeuserid" jdbcType="VARCHAR" />
+    <result column="REASON" property="reason" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, OEDERID, USERID, DEPTID, CHANGEUSERID, REASON, MEMO, CREATETIME, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_changed
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order_changed
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbOrderChanged" >
+    insert into tb_order_changed (ID, OEDERID, USERID, 
+      DEPTID, CHANGEUSERID, REASON, 
+      MEMO, CREATETIME, STATUS
+      )
+    values ('', #{oederid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{deptid,jdbcType=VARCHAR}, #{changeuserid,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, now(), #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbOrderChanged" >
+    insert into tb_order_changed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="oederid != null" >
+        OEDERID,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="deptid != null" >
+        DEPTID,
+      </if>
+      <if test="changeuserid != null" >
+        CHANGEUSERID,
+      </if>
+      <if test="reason != null" >
+        REASON,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="oederid != null" >
+        #{oederid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="changeuserid != null" >
+        #{changeuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbOrderChanged" >
+    update tb_order_changed
+    <set >
+      <if test="oederid != null" >
+        OEDERID = #{oederid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        DEPTID = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="changeuserid != null" >
+        CHANGEUSERID = #{changeuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        REASON = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbOrderChanged" >
+    update tb_order_changed
+    set OEDERID = #{oederid,jdbcType=VARCHAR},
+      USERID = #{userid,jdbcType=VARCHAR},
+      DEPTID = #{deptid,jdbcType=VARCHAR},
+      CHANGEUSERID = #{changeuserid,jdbcType=VARCHAR},
+      REASON = #{reason,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 更改表格数据状态  -->
+  <update id="updChangeStatus" parameterType="java.lang.String">
+  	update tb_order_changed set status = 1 where OEDERID = #{_parameter,jdbcType=VARCHAR}
+  </update>
+</mapper>

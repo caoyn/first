@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.icss.dao.ApplyClassDao">
+	
+	<!-- 映射 -->
+	<resultMap type="com.icss.bean.QualifiedStudent" id="qualifiedStudent">
+		<!-- 主键id -->
+		<id column="ID" property="stuId"/>
+		<!-- 学员编号 -->
+		<result column="CUSTOMERID" property="stuNo"/>
+		<!-- 学员姓名 -->
+		<result column="CUSTOMERNAME" property="stuName"/>
+		<!-- 订单号 -->
+		<result column="ORDERID" property="orderId"/>
+		<!-- 所属销售 --><!-- 通过USERID左连接查询 -->
+		<result column="USERNAME" property="salesName"/>
+		<!-- 订单状态 -->
+		<result column="STATUS" property="orderStatus" />
+	</resultMap>
+	
+	<!-- 获取得到入班审核许可的学员 getQualifiedStudents -->
+	<select id="getQualifiedStudents" parameterType="java.util.List" resultMap="qualifiedStudent">
+		select c.ID, c.CUSTOMERID, c.CUSTOMERNAME, u.USERNAME, o.ORDERID, o.STATUS
+		from tb_customer c 
+		left join tb_order_orders o on c.CUSTOMERID=o.CUSTOMERID
+		left join tb_sys_user u on o.USERID=u.USERID
+		where o.STATUS in <!-- ('1013','1014') -->
+		<foreach collection="list" item="s" separator="," open="(" close=")">
+			#{s}
+		</foreach>
+	</select>
+	
+</mapper>

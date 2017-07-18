@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbProdDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbProdDetail" >
+    <id column="ID" property="did" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="SUBPRODID" property="subprodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="SUBPRODNAME" property="subprodname" jdbcType="VARCHAR" />
+    <result column="SUBPRODPRICE" property="subprodprice" jdbcType="REAL" />
+    <result column="SUBPRODSALEPRICE" property="subprodsaleprice" jdbcType="REAL" />
+    <result column="SUBPRODMINPRICE" property="subprodminprice" jdbcType="REAL" />
+    <result column="DISCOUNTENABLE" property="discountenable" jdbcType="VARCHAR" />
+    <result column="STATUS" property="pstatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PRODID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, SUBPRODMINPRICE, 
+    DISCOUNTENABLE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_prod_detail
+    where ID = #{did,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_prod_detail
+    where ID = #{did,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbProdDetail" >
+    insert into tb_prod_detail (ID, PRODID, SUBPRODID, 
+      SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, 
+      SUBPRODMINPRICE, DISCOUNTENABLE)
+    values ('', #{prodid,jdbcType=VARCHAR}, '', 
+      #{subprodname,jdbcType=VARCHAR}, #{subprodprice,jdbcType=REAL}, #{subprodsaleprice,jdbcType=REAL}, 
+      #{subprodminprice,jdbcType=REAL}, #{discountenable,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbProdDetail" >
+    insert into tb_prod_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="prodid != null" >
+        PRODID,
+      </if>
+      <if test="subprodid != null" >
+        SUBPRODID,
+      </if>
+      <if test="subprodname != null" >
+        SUBPRODNAME,
+      </if>
+      <if test="subprodprice != null" >
+        SUBPRODPRICE,
+      </if>
+      <if test="subprodsaleprice != null" >
+        SUBPRODSALEPRICE,
+      </if>
+      <if test="subprodminprice != null" >
+        SUBPRODMINPRICE,
+      </if>
+      <if test="discountenable != null" >
+        DISCOUNTENABLE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodid != null" >
+        #{subprodid,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodname != null" >
+        #{subprodname,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodprice != null" >
+        #{subprodprice,jdbcType=REAL},
+      </if>
+      <if test="subprodsaleprice != null" >
+        #{subprodsaleprice,jdbcType=REAL},
+      </if>
+      <if test="subprodminprice != null" >
+        #{subprodminprice,jdbcType=REAL},
+      </if>
+      <if test="discountenable != null" >
+        #{discountenable,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbProdDetail" >
+    update tb_prod_detail
+    <set >
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodid != null" >
+        SUBPRODID = #{subprodid,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodname != null" >
+        SUBPRODNAME = #{subprodname,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodprice != null" >
+        SUBPRODPRICE = #{subprodprice,jdbcType=REAL},
+      </if>
+      <if test="subprodsaleprice != null" >
+        SUBPRODSALEPRICE = #{subprodsaleprice,jdbcType=REAL},
+      </if>
+      <if test="subprodminprice != null" >
+        SUBPRODMINPRICE = #{subprodminprice,jdbcType=REAL},
+      </if>
+      <if test="discountenable != null" >
+        DISCOUNTENABLE = #{discountenable,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{did,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbProdDetail" >
+    update tb_prod_detail
+    set PRODID = #{prodid,jdbcType=VARCHAR},
+      SUBPRODID = #{subprodid,jdbcType=VARCHAR},
+      SUBPRODNAME = #{subprodname,jdbcType=VARCHAR},
+      SUBPRODPRICE = #{subprodprice,jdbcType=REAL},
+      SUBPRODSALEPRICE = #{subprodsaleprice,jdbcType=REAL},
+      SUBPRODMINPRICE = #{subprodminprice,jdbcType=REAL},
+      DISCOUNTENABLE = #{discountenable,jdbcType=VARCHAR}
+    where ID = #{did,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据产品编号查看是否有子产品 -->
+  <select id="getProdDetailById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT ID, PRODID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, SUBPRODMINPRICE, DISCOUNTENABLE
+     FROM tb_prod_detail WHERE PRODID = #{_parameter,jdbcType=VARCHAR} AND PRODID &lt;&gt; SUBPRODID;
+  </select>
+  
+  <!-- 根据产品编号更新产品信息 -->
+  <update id="updateByProdid" parameterType="com.icss.bean.TbProdDetail" >
+    update tb_prod_detail
+    <set >
+      <if test="subprodname != null" >
+        SUBPRODNAME = #{subprodname,jdbcType=VARCHAR},
+      </if>
+      <if test="subprodprice != null" >
+        SUBPRODPRICE = #{subprodprice,jdbcType=REAL},
+      </if>
+      <if test="subprodsaleprice != null" >
+        SUBPRODSALEPRICE = #{subprodsaleprice,jdbcType=REAL},
+      </if>
+      <if test="subprodminprice != null" >
+        SUBPRODMINPRICE = #{subprodminprice,jdbcType=REAL},
+      </if>
+      <if test="discountenable != null" >
+        DISCOUNTENABLE = #{discountenable,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where  SUBPRODID = #{subprodid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查看可以使用的产品(弃用)  -->
+  <select id="getAllViableProduct" resultMap="BaseResultMap">
+  	SELECT d.ID, d.PRODID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, SUBPRODMINPRICE, DISCOUNTENABLE
+    FROM tb_prod_detail d 
+  	INNER JOIN tb_prod_base b ON b.prodid = d.subprodid 
+  	WHERE d.prodid = subprodid and STATUS = 1
+  </select>
+  
+  <!-- 查看所有子产品信息 -->
+  <select id="getAllProdData" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from tb_prod_detail order by PRODID,SUBPRODID
+  </select>
+  
+  <!-- 根据主表编号查看详表信息 -->
+  <select id="getProdDetailByPid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	 select 
+    <include refid="Base_Column_List" />
+    from tb_prod_detail where PRODID = #{_parameter,jdbcType=VARCHAR} order by SUBPRODID
+  </select>
+  
+  <!-- 删除指定表格数据 -->
+  <delete id="udlProdDetailByPid" parameterType="java.lang.String">
+  	 delete from tb_prod_detail
+    where PRODID = #{_parameter,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 查看指定子产品编号的子产品数据 -->
+  <select id="getSubProdBySid" parameterType="java.lang.String" resultType="com.icss.bean.TbProdDetail">
+   select 
+    <include refid="Base_Column_List" />
+    from tb_prod_detail where SUBPRODID = #{_parameter,jdbcType=VARCHAR}
+   </select>
+   
+   <!-- 查看所有产品详情  （是否允许折扣等）-->
+   <select id="selectAllProdsData" resultMap="BaseResultMap">
+   	SELECT b.ID, b.PRODID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, 
+   	SUBPRODMINPRICE, DISCOUNTENABLE, PRODNAME, `STATUS`
+   	FROM tb_prod_base b
+	INNER JOIN tb_prod_detail d 
+	ON b.PRODID = d.PRODID
+   </select>
+  
+</mapper>

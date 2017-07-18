@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TreeBuilderMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TreeNode" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parentId, name, value, status, level
+  </sql>
+  <!-- 查看所有部门 -->
+  <select id="getAllDeptData" resultMap="BaseResultMap">
+  	select DEPTID id, DEPTNAME name, DEPTLEVEL level, TOPDEPTID parentId,  USERID value, STATUS status
+   	from tb_sys_dept    
+  </select>
+ 
+   <!-- 根据用户编号查看所有可用的权限 -->
+  <select id="getMenuByUserid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select  p.permissionid id, level parentId, permissionname name, actionurl value 
+  	FROM tb_sys_userroledetail urd INNER JOIN tb_sys_permission p ON p.permissionid = urd.permissionid 
+  	WHERE userid = #{_parameter,jdbcType=VARCHAR} and status = 1 order by ORDERNUM
+  </select>
+  
+  <!-- cq -->
+  <select id="getTreePer" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select  p.permissionid id, level parentId, permissionname name, actionurl value 
+  	FROM tb_sys_userroledetail urd INNER JOIN tb_sys_permission p ON p.permissionid = urd.permissionid 
+  	WHERE  status = 1
+  </select>
+  
+</mapper>

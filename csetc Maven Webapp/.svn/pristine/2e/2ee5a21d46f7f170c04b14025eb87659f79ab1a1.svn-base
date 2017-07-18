@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysBasecodeMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysBasecode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="LEVEL1ID" property="level1id" jdbcType="VARCHAR" />
+    <result column="LEVEL1NAME" property="level1name" jdbcType="VARCHAR" />
+    <result column="LEVEL2ID" property="level2id" jdbcType="VARCHAR" />
+    <result column="LEVEL2NAME" property="level2name" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LEVEL1ID, LEVEL1NAME, LEVEL2ID, LEVEL2NAME, VALUE, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_basecode
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_basecode
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysBasecode" >
+    insert into tb_sys_basecode (ID, LEVEL1ID, LEVEL1NAME, 
+      LEVEL2ID, LEVEL2NAME, VALUE, 
+      STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{level1id,jdbcType=VARCHAR}, #{level1name,jdbcType=VARCHAR}, 
+      #{level2id,jdbcType=VARCHAR}, #{level2name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysBasecode" >
+    insert into tb_sys_basecode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="level1id != null" >
+        LEVEL1ID,
+      </if>
+      <if test="level1name != null" >
+        LEVEL1NAME,
+      </if>
+      <if test="level2id != null" >
+        LEVEL2ID,
+      </if>
+      <if test="level2name != null" >
+        LEVEL2NAME,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),#{id,jdbcType=VARCHAR}),
+      </if>
+      <if test="level1id != null" >
+        #{level1id,jdbcType=VARCHAR},
+      </if>
+      <if test="level1name != null" >
+        #{level1name,jdbcType=VARCHAR},
+      </if>
+      <if test="level2id != null" >
+        #{level2id,jdbcType=VARCHAR},
+      </if>
+      <if test="level2name != null" >
+        #{level2name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysBasecode" >
+    update tb_sys_basecode
+    <set >
+      <if test="level1id != null" >
+        LEVEL1ID = #{level1id,jdbcType=VARCHAR},
+      </if>
+      <if test="level1name != null" >
+        LEVEL1NAME = #{level1name,jdbcType=VARCHAR},
+      </if>
+      <if test="level2id != null" >
+        LEVEL2ID = #{level2id,jdbcType=VARCHAR},
+      </if>
+      <if test="level2name != null" >
+        LEVEL2NAME = #{level2name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysBasecode" >
+    update tb_sys_basecode
+    set LEVEL1ID = #{level1id,jdbcType=VARCHAR},
+      LEVEL1NAME = #{level1name,jdbcType=VARCHAR},
+      LEVEL2ID = #{level2id,jdbcType=VARCHAR},
+      LEVEL2NAME = #{level2name,jdbcType=VARCHAR},
+      VALUE = #{value,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据大类查所有小类   -->
+  <select id="getSmallTypeOfBigType" parameterType="java.lang.String" resultMap="BaseResultMap">
+   SELECT <include refid="Base_Column_List" />  FROM tb_sys_basecode WHERE level1Id = #{_parameter,jdbcType=VARCHAR}  
+  </select>
+  
+  <!-- 根据大类编号查看其下最大的小类编号 -->
+  <select id="getSmallMaxIdOfBigId" parameterType="java.lang.String" resultType="java.lang.String">
+   SELECT MAX(level2id+0) FROM tb_sys_basecode WHERE level1Id = #{_parameter,jdbcType=VARCHAR}  
+  </select>
+  
+  <!-- 获得表格中的最大id今日开头  -->
+  <select id="getMaxId" resultType="java.lang.String">
+  	SELECT MAX(ID) FROM tb_sys_basecode WHERE ID like CONCAT ( DATE_FORMAT(CURDATE(),'%Y%m%d'),'%')
+  </select>
+  
+  <!-- 查找最大的大类编号 -->
+   <select id="getBidMaxId" resultType="java.lang.String">
+  	SELECT MAX(level1id) FROM tb_sys_basecode 
+  </select>
+  
+  <!-- 查看所有大类 -->
+  <select id="getALLBigTypeData" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM tb_sys_basecode GROUP BY level1id
+  </select>
+  
+  <!-- 根据输入的值判断该小类是否存在   -->
+  <select id="judgeExist" resultMap="BaseResultMap" parameterType="com.icss.bean.TbSysBasecode">
+  	SELECT <include refid="Base_Column_List" /> FROM tb_sys_basecode WHERE level1id = #{level1id,jdbcType=VARCHAR} and level2name = #{level2name,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据输入的值判断该大类是否存在   -->
+  <select id="judgeExistMax" resultMap="BaseResultMap" parameterType="com.icss.bean.TbSysBasecode">
+  	SELECT <include refid="Base_Column_List" /> FROM tb_sys_basecode WHERE level1name = #{level1name,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查看所有的基础代码  -->
+  <select id="getAllBasecodeData" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM tb_sys_basecode order by level1id,level2id
+  </select>
+ </mapper>

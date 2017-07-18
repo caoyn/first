@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysRolepermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysRolepermission" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
+    <result column="PERMISSIONID" property="permissionid" jdbcType="VARCHAR" />
+    <result column="OPERID" property="operid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ROLEID, PERMISSIONID, OPERID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_rolepermission
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_rolepermission
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysRolepermission" >
+    insert into tb_sys_rolepermission (ID, ROLEID, PERMISSIONID, 
+      OPERID)
+    values (CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),#{id,jdbcType=VARCHAR}), #{roleid,jdbcType=VARCHAR}, #{permissionid,jdbcType=VARCHAR}, 
+      #{operid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysRolepermission" >
+    insert into tb_sys_rolepermission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="roleid != null" >
+        ROLEID,
+      </if>
+      <if test="permissionid != null" >
+        PERMISSIONID,
+      </if>
+      <if test="operid != null" >
+        OPERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionid != null" >
+        #{permissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="operid != null" >
+        #{operid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysRolepermission" >
+    update tb_sys_rolepermission
+    <set >
+      <if test="roleid != null" >
+        ROLEID = #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionid != null" >
+        PERMISSIONID = #{permissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="operid != null" >
+        OPERID = #{operid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysRolepermission" >
+    update tb_sys_rolepermission
+    set ROLEID = #{roleid,jdbcType=VARCHAR},
+      PERMISSIONID = #{permissionid,jdbcType=VARCHAR},
+      OPERID = #{operid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>  
+  <!-- 查看最大的id -->
+  <select id="getMaxId" resultType="java.lang.String">
+  	SELECT MAX(ID) FROM tb_sys_rolepermission WHERE ID like CONCAT ( DATE_FORMAT(CURDATE(),'%Y%m%d'),'%')
+  </select>
+  
+  <!-- 删除某角色对应的权限  -->
+  <delete id="delOneRolePermission" parameterType="java.lang.String">
+  	DELETE from tb_sys_rolepermission WHERE roleid=#{_parameter,jdbcType=VARCHAR}
+  </delete>
+  
+</mapper>

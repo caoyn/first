@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.icss.dao.ICustomerQualificationDao">
+	
+	<!-- 映射 -->
+	<resultMap type="com.icss.bean.CustomerQualification" id="customerQualification">
+		<!-- 资质主键  -->
+		<id column="ID" property="id"/>
+		<!-- 客户编号 -->
+		<result column="CUSTOMERID" property="customerId" />
+		<!-- 资质类型id -->
+		<result column="ATYPE" property="qualificationTypeId" />
+		<!-- 资质说明 -->
+		<result column="AMEMO" property="qualificationMemo" />
+		<!-- 资质地址 -->
+		<result column="AURL" property="qualificationUrl" />
+
+		<!-- 创建人  -->
+		<result column="CREATOR" property="creator" />
+		<!-- 创建时间  -->
+		<result column="CREATETIME" property="createTime" />
+	
+		<!-- 订单号  -->
+		<result column="ORDERID" property="orderId" />
+	</resultMap>
+	
+	<!-- 通过订单号匹配出客户id getCusIdByOrderId(String orderId); -->
+	<select id="getCusIdByOrderId" parameterType="java.lang.String" resultType="java.lang.String">
+		select CUSTOMERID from tb_order_orders where ORDERID=#{orderId}
+	</select>
+	
+</mapper>

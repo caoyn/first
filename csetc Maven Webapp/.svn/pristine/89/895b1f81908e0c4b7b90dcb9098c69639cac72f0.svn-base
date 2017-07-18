@@ -1,0 +1,485 @@
+/**
+ * JS名: user.js </br>
+ * 描述:部门管理处理文件</br>
+ * 所属:长沙中软计算机系统服务有限公司</br>
+ * 开发人员：李敏 </br>
+ * 创建时间：2017-06-02 </br>
+ */
+/*-----------------------------------相关参数--------------------------------------------*/
+$(document).ready(function(){
+	fillTableData();// 加载表格数据
+	$("#role_data").on('onSetSelectValue', function (e, keyword) {
+        console.log('onSetSelectValue: ', keyword.id);
+        oneUserRolePermission($("#powerForm input[name='userid']").val(),keyword.id,"permission/oneRolePermission.do","1");
+    })
+});
+
+/*-----------------------------------页面加载处理---------查询----------------------------------------*/
+
+function fillTableData(){
+	$('#exampleTableLargeColumns').bootstrapTable({
+		data:getALLData(),
+		striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        toolbar:"#userToolbar",
+     //   queryParams: oTableInit.queryParams,//传递参数（*）
+        sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: false,
+        showColumns: true,                  //是否显示所有的列
+     //   showRefresh: true,                  //是否显示刷新按钮
+     //   minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+      //  height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+        uniqueId: 'id',                     //每一行的唯一标识，一般为主键列
+      /*  showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+        cardView: false,   */                 //是否显示详细视图
+     //   detailView: false,                   //是否显示父子表
+			columns: [{
+				checkbox:true,
+			},
+			{
+		        field: 'userid',
+		        title: 'EHR编号'
+		    }, {
+		        field: 'username',
+		        title: '用户名'
+		    }, {
+		        field: 'rolename',
+		        title: '角色'
+		    },{
+		        field: 'loginname',
+		        title: '登录账号'
+		    },{
+		    	field: 'roledesc',
+		    	title: '角色描述'
+		    },{
+		        field: 'description',
+		        title: '描述'
+		    },{
+		        field: 'status',
+		        title: '状态',
+		        formatter:function(value,row,index){
+		    		if(value == 1){
+		    			return "启用";
+		    		}else if(value == 2){
+		    			return "禁用";
+		    		}else if(value == 0){
+		    			return "锁定";
+		    		}
+		    	}
+		    },{
+		    	field: 'b1',
+		    	title: '操作'
+				}
+			]
+	});
+}
+
+function  getALLData() {
+	var obj;
+	$.ajax({
+		type:"POST",
+		url:"SysUser/allUserRole.do ",
+		dataType:"JSON",
+		async:false,
+		success:function(data){
+			obj = JSON.parse(data);
+			console.log(obj);
+			$.each(obj,function(index, i){
+				if(i.status == 1){
+					i.b1="<button type='button' class='btn btn-danger btn-xs' onclick='daletedata(\"" + i.id + "\",2,\""+i.userid+"\")'>禁用</button> "
+				}else{
+					i.b1="<button type='button' class='btn btn-success btn-xs' onclick='daletedata(\"" + i.id + "\",1,\""+i.userid+"\")'>启用</button> "
+				}
+				i.b1+= "<button type='button' class='btn btn-info btn-xs' onclick='resetPwd(\"" + i.id + "\")'>重置密码</button>";
+			});
+			
+		},
+		error:function(){
+			toastr.error("出错了，获得用户权限数据失败！");
+		}
+	});
+	return obj;
+}
+/*-----------------------------------修改用户信息  查询单个用户信息----------------------------------------*/
+function upduserinfo(){
+	var leavejob = $('#exampleTableLargeColumns').bootstrapTable('getSelections');
+	if(leavejob.length != 1){
+		toastr.warning("请选择单条数据操作！")
+		return false;
+	}else{
+		var status = leavejob[0].status;
+		$("#formiusernfo input[name='oldDeptid']").val(leavejob[0].deptid);
+		$("#formiusernfo input[name='oldDeptname']").val(leavejob[0].deptname);
+		$("#formiusernfo input[name='userid']").val(leavejob[0].userid);
+		$("#formiusernfo input[name='loginname']").val(leavejob[0].loginname);
+		$("#formiusernfo input[name='username']").val(leavejob[0].username);
+		$("#formiusernfo input[name='telephone']").val(leavejob[0].telephone);
+		$("#formiusernfo input[name='mobile']").val(leavejob[0].mobile);
+		$("#formiusernfo input[name='address']").val(leavejob[0].address);
+		$("#formiusernfo input[name='email']").val(leavejob[0].email);
+		$("#formiusernfo input[name='id']").val(leavejob[0].id);
+		$("#upddept_data").val(leavejob[0].deptname);
+		getDeptData("upddept_data");	
+		//状态位展示
+		if(status == 1){
+			$("#formiusernfo input[name='status'][value='1']").prop("checked",true);
+		}else if(status == 2){
+			$("#formiusernfo input[name='status'][value='2']").prop("checked",true);
+		}else{
+			$("#formiusernfo input[name='status'][value='0']").prop("checked",true);
+		}
+		$('#myModal1').modal('show');		
+		
+	}
+}
+//---------------------------------新增用户操作----------------------------//
+
+//添加
+function insertdata(){
+	if(!$("#formdata").valid()){
+		return false;
+	}
+	$.ajax({
+		type:"POST",
+		url:"SysUser/insert.do?deptid="+$("#dept_data").attr("data-id"),
+		data:$("#formdata").serialize(),
+		dataType:"json",
+		async:false,
+		success:function(data){
+			console.log(data);
+			alert("默认密码为：  "+JSON.parse(data).password +"  请复制粘贴保存好");//w&z@gnq54b
+			$('#myModal').modal('hide');
+			$("#exampleTableLargeColumns").bootstrapTable("load",getALLData());
+		},
+		error:function(){
+			toastr.error("出错了，新增用户失败");
+		}
+	})
+	
+}
+//-----------------------------------------------------删除用户操作----------------------//
+
+function daletedata(id,status,userid){
+	 swal({
+	        title: "您确定要禁用该用户吗",
+	        text: "请确认该用户已经离职后再进行此操作！",
+	        type: "warning",
+	        confirmButtonColor: "#DD6B55",
+	        confirmButtonText: "确定",
+	        closeOnConfirm: false,
+	        showCancelButton: true,
+	        cancelButtonText: "取消"
+	    }, function () {
+			$.ajax({
+				type:"POST",
+				url:"SysUser/delete.do",
+				data:{"id":id,"status":status,"userid":userid},
+				dataType:"json",
+				async: false,
+				success:function(data){
+					window.location.reload();
+					swal("操作成功！", "", "success");
+					$("#exampleTableLargeColumns").bootstrapTable("load",getALLData())
+				},
+				error:function(){
+					toastr.error("操作失败！");
+				}
+			});
+	    });
+	
+}
+/*-----------------------------------修改用户信息  按钮操作----------------------------------------*/
+function upInfo(){
+	if(!$("#formiusernfo").valid()){
+		return false;
+	}
+	if($("#formiusernfo oldDeptid").val() != $("#upddept_data").attr("data-id")){
+		swal({
+	        title: "您修改了该用户的部门,确定吗？",
+	        text: "",
+	        type: "warning",
+	        confirmButtonColor: "#DD6B55",
+	        confirmButtonText: "确定",
+	        closeOnConfirm: false,
+	        showCancelButton: true,
+	        cancelButtonText: "取消"
+	    }, function () {
+	    	updUserData();
+	    	swal("修改用户信息成功！", "", "success");
+	    });
+	}else{
+		updUserData();
+		toastr.success("修改成功");
+	}
+	
+}
+
+function updUserData(){
+	$.ajax({
+		type:"POST",
+		url:"SysUser/updateone.do?deptid="+$("#upddept_data").attr("data-id"),
+		data:$("#formiusernfo").serialize(),
+		async:false,
+		dataType:"json",
+		success:function(data){
+			$('#myModal1').modal('hide');
+			$("#exampleTableLargeColumns").bootstrapTable("load",getALLData());
+			
+		},
+		error:function(){
+			toastr.error("出错了，修改用户信息出错");
+		}
+	});
+}
+
+function updper(){
+	/*var roid=document.getElementById("rolename").selectedIndex .options[index].value;*/
+	 var  myselect=document.getElementById("rolename");
+	 var index=myselect.selectedIndex ;           
+	 var roleid=myselect.options[index].value;
+	 alert(roleid);
+	 var 	nodes=$.fn.zTree.getZTreeObj("tree").getCheckedNodes(true);
+	var rolepermission="";
+	for(var i=0;i<nodes.length;i++){
+		rolepermission+=nodes[i].permissionid+","; //获取选中节点的值
+		alert(nodes[i].permissionid);
+	}
+	$.ajax({
+			type:"POST",
+			url:"SysPermission/updRolePermission.do",
+			data:{
+				"roleid":roleid,
+				"rolepermission":rolepermission
+			},
+			async:false,
+			dataType:"JSON",
+			success:function(data){
+				$('#myModal2').modal('hide');		
+				$("#exampleTableLargeColumns").bootstrapTable("load",getALLData())
+
+			}
+	})
+	
+}
+//-------------------------用户授权操作----查询所有角色----------------------------------------------------//
+
+function getRoleData(){
+	$.ajax({
+		type:"POST",
+		url:"role/getAllRoleData.do",
+		dataType:"JSON",
+		success:function(data){
+			var obj=JSON.parse(data);
+			$.each(obj,function(index, i){
+				$("#rolename").append("<option value='"+i.roleid+"'  id='"+i.roleid+"'>"+i.rolename+"</option>");
+			})
+		},
+		error:function(){
+			toastr.error("出错了");
+		}
+	});
+	
+}
+
+		
+//新增员工展示
+function addUserShow(){
+//查看部门信息
+	getDeptData("dept_data");
+	$("#myModal").modal("show");	
+}
+
+// 获得部门数据
+function getDeptData(dataid){
+	$.ajax({
+		type:"POST",
+		url:"dept/getAllDept.do",
+		dataType:"json",
+		async:false,
+		success:function(data){
+			var json = JSON.parse(data);
+			var array = [];
+			$.each(json,function(i,o){
+				//alert(o.username);
+				var deptuser = {"id":"","word":""};
+				deptuser.id = o.deptname;
+				deptuser.word = o.deptid;
+				array.push(deptuser);
+			});
+			$("#"+dataid).bsSuggest({
+				indexId:1,
+				indexKey:0,
+				data:{"value":array}
+			});
+	
+		}
+	});
+}
+		
+//验证是否重复
+function checkRepect(input,type){
+	if(input.value.length == 0){
+		return false;
+	}
+	$.ajax({
+		type:"POST",
+		url:"SysUser/checkRepect.do",
+		dataType:"json",
+		data:{"data":input.value,"type":type},
+		async:false,
+		success:function(data){
+			if(data>0){
+				toastr.warning("该数据已经存在");
+				input.value="";
+			}
+		}
+	});
+}
+
+//重置密码
+function resetPwd(id){
+	 swal({
+	        title: "您确定要重置该用户的密码吗",
+	        text: "重置后将无法恢复，请谨慎操作！",
+	        type: "warning",
+	        confirmButtonColor: "#DD6B55",
+	        confirmButtonText: "重置",
+	        closeOnConfirm: false,
+	        showCancelButton: true,
+	        cancelButtonText: "取消"
+	    }, function () {
+			$.ajax({
+				type:"POST",
+				url:"SysUser/resetPwd.do",
+				dataType:"json",
+				data:{"id":id},
+				async:false,
+				success:function(data){
+					swal("重置密码成功！", "重置后的密码是：  "+ data +" 请妥善保存!", "success");
+					$("#exampleTableLargeColumns").bootstrapTable("load",getALLData());
+				}
+			});
+	    });
+}
+
+//用户授权展示
+function givepower(){
+	
+	//1.用户信息
+	var userTableData = $("#exampleTableLargeColumns").bootstrapTable("getSelections");
+	if(userTableData.length != 1){
+		toastr.warning("请选择一条数据再进行此操作！");
+		return false;
+	}
+	$("#powerForm input[name='userid']").val(userTableData[0].userid);
+	//2.获得角色信息
+	$.ajax({
+		type:"post",
+		url:"role/getRoleBystatus.do",
+		dataType:"json",
+		async:false,
+		success:function(data){
+			var json = JSON.parse(data);
+			var array = [];
+			$.each(json,function(i,o){
+				//alert(o.username);
+				var deptuser = {"id":"","word":""};
+				deptuser.id = o.rolename;
+				deptuser.word = o.roleid;
+				array.push(deptuser);
+			});
+			$("#role_data").bsSuggest({
+				indexId:1,
+				indexKey:0,
+				data:{"value":array,"defaults":json[0].roleid}
+			});
+	
+		},
+		error:function(){
+			toastr.error("获得角色信息失败！");
+		}
+	});
+	//获得已经授予的权限
+	if(userTableData[0].roleid != null){
+		$("#role_data").val(userTableData[0].rolename);
+		$("#role_data").attr("data-id",userTableData[0].roleid);
+		toastr.info("已授权");
+		oneUserRolePermission(userTableData[0].userid,userTableData[0].roleid,'permission/oneUserRolePermission.do')
+	}else{
+		$("#role_data").val("");
+		$("#operPermissionTree").html("");
+	}
+	$("#powerModal").modal("show");
+}
+
+
+//用户关联角色展示
+function oneUserRolePermission(userid,roleid,url){
+	d = new dTree('d','images/system/menu/');
+	d.config.check=true;
+	$.ajax({//根据角色查看该角色对应的可以看的权限数据
+		type:"POST",
+		url:url,
+		dataType:"json",
+		async:false,
+		data:{"userid" : userid, "roleid" : roleid},
+		success:function(data){
+			var json = JSON.parse(data);
+			var count = 0;
+			$.each(json,function(index,obj){	
+				if(obj.ordernum != null && obj.ordernum != "null"){
+					d.add(obj.permissionid, obj.level, obj.permissionname, "javascript:;", obj.permissionanme,"","","",true,"");
+					count ++;
+				}else{
+					d.add(obj.permissionid, obj.level, obj.permissionname, "javascript:;", obj.permissionanme,"","","",false,"");
+				}
+			});
+			
+		},error:function(){ 
+			toastr.error("数据加载错误!");
+		}
+	});
+	document.getElementById('operPermissionTree').innerHTML = d;
+}
+
+//给某用户新增角色和权限关系
+function addUserRolePermission(){
+	if(!$("#powerForm").valid()){
+		return false;
+	}
+	$.ajax({
+		type:"POST",
+		url:"permission/addUserRolePermission.do",
+		dataType:"json",
+		async:false,
+		data:{"userid":$("#powerForm input[name='userid']").val(),"roleid":$("#role_data").attr("data-id"),"rolepermission":nodeCheckboxValue("#operPermissionTree .dTreeNode :checkbox:checked")},
+		success:function(data){
+			toastr.info("授权成功");
+			$("#powerModal").modal("hide");
+			$("#exampleTableLargeColumns").bootstrapTable("load",getALLData());
+		},error:function(){
+			toastr.error("授权出错!");
+		}
+	});
+}
+
+//选中树复选框的值
+function nodeCheckboxValue(checkboxStr){
+	//获得b表单中的checkbox "#operpermissionTree .dTreeNode :checkbox:checked"
+	var checkboxs = $(checkboxStr);
+	var checkboxarray = "";
+	if(checkboxs.length>0){		
+		checkboxs.each(function(){ //由于复选框一般选中的是多个,所以可以循环输出 
+			checkboxarray += $(this).val() + ",";
+		});
+	}
+	return checkboxarray;
+}

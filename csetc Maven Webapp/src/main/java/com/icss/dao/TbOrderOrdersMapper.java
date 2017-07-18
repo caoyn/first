@@ -1,0 +1,48 @@
+package com.icss.dao;
+
+import java.util.List;
+
+import com.icss.bean.TbOrderOrders;
+
+public interface TbOrderOrdersMapper {
+    int deleteByPrimaryKey(String id);
+
+    int insert(TbOrderOrders record);
+
+    int insertSelective(TbOrderOrders record);
+
+    TbOrderOrders selectByPrimaryKey(String id);
+
+    int updateByPrimaryKeySelective(TbOrderOrders record);
+  
+    int updateByPrimaryKey(TbOrderOrders record);
+    
+    int addOrder(TbOrderOrders orders);
+    
+    String getOrderid();
+    
+    List<TbOrderOrders> getAllOrderData();
+    
+    List<TbOrderOrders> getSecondOrderData(String deptids);
+    
+    List<TbOrderOrders> getDeptOrderData(String deptid);
+    
+    List<TbOrderOrders> getMyOrderData(String userid);
+    
+    List<TbOrderOrders> getTelDeptOrderData(String userid);
+    
+    List<TbOrderOrders> getTelOrderData(String userid);
+    
+    int updateByOrderid(TbOrderOrders record);
+    
+    TbOrderOrders getOrderDataByOid(String orderid);
+    
+    List<TbOrderOrders> notPayOrder();
+    
+    int cancelRefund(String orderid);
+    
+    List<TbOrderOrders> getOrderDataByCid(String cid);
+
+    //获取上传客户纸质至少需要的交款金额
+	Integer getAtLeastMoneyForQua();
+}

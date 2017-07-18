@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbOrderPaymentMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbOrderPayment" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="REAL" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERDEPT" property="userdept" jdbcType="VARCHAR" />
+    <result column="PAYMENTTIME" property="paymenttime" jdbcType="DATE" />
+    <result column="PAYMETHOD" property="paymethod" jdbcType="VARCHAR" />
+    <result column="BANKINGBOOK" property="bankingbook" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ORDERID, PRODID, PRODNAME, AMOUNT, USERID, USERDEPT, PAYMENTTIME, PAYMETHOD, 
+    BANKINGBOOK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_payment
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order_payment
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbOrderPayment" >
+    insert into tb_order_payment (ID, ORDERID, PRODID, 
+      PRODNAME, AMOUNT, USERID, 
+      USERDEPT, PAYMENTTIME, PAYMETHOD, 
+      BANKINGBOOK)
+    values ('', #{orderid,jdbcType=VARCHAR}, #{prodid,jdbcType=VARCHAR}, 
+      #{prodname,jdbcType=VARCHAR}, #{amount,jdbcType=REAL}, #{userid,jdbcType=VARCHAR}, 
+      #{userdept,jdbcType=VARCHAR}, now(), #{paymethod,jdbcType=VARCHAR}, 
+      #{bankingbook,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbOrderPayment" >
+    insert into tb_order_payment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="prodid != null" >
+        PRODID,
+      </if>
+      <if test="prodname != null" >
+        PRODNAME,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="userdept != null" >
+        USERDEPT,
+      </if>
+      <if test="paymenttime != null" >
+        PAYMENTTIME,
+      </if>
+      <if test="paymethod != null" >
+        PAYMETHOD,
+      </if>
+      <if test="bankingbook != null" >
+        BANKINGBOOK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="userdept != null" >
+        #{userdept,jdbcType=VARCHAR},
+      </if>
+      <if test="paymenttime != null" >
+        #{paymenttime,jdbcType=DATE},
+      </if>
+      <if test="paymethod != null" >
+        #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bankingbook != null" >
+        #{bankingbook,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbOrderPayment" >
+    update tb_order_payment
+    <set >
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=REAL},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="userdept != null" >
+        USERDEPT = #{userdept,jdbcType=VARCHAR},
+      </if>
+      <if test="paymenttime != null" >
+        PAYMENTTIME = #{paymenttime,jdbcType=DATE},
+      </if>
+      <if test="paymethod != null" >
+        PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bankingbook != null" >
+        BANKINGBOOK = #{bankingbook,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbOrderPayment" >
+    update tb_order_payment
+    set ORDERID = #{orderid,jdbcType=VARCHAR},
+      PRODID = #{prodid,jdbcType=VARCHAR},
+      PRODNAME = #{prodname,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=REAL},
+      USERID = #{userid,jdbcType=VARCHAR},
+      USERDEPT = #{userdept,jdbcType=VARCHAR},
+      PAYMENTTIME = #{paymenttime,jdbcType=DATE},
+      PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      BANKINGBOOK = #{bankingbook,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 以下语句用于生成首页和报表数据****************************************************************************************** -->
+  
+  <!-- 查看所有收入（总） -->
+  <select id="getGrossIncome" parameterType="java.lang.String" resultType="java.lang.Float">
+  	SELECT IFNULL(SUM(amount),0) from tb_order_payment 
+  	WHERE amount >0 
+  	<if test='_parameter == "month"'>
+  		AND DATE_FORMAT(paymenttime,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m') 
+  	</if>
+  	<if test='_parameter == "year"'>
+  		AND DATE_FORMAT(paymenttime,'%Y') = DATE_FORMAT(CURDATE(),'%Y') 
+  	</if>
+  	<if test='_parameter == "day"'>
+  		AND DATE_FORMAT(paymenttime,'%Y%m%d') = DATE_FORMAT(CURDATE(),'%Y%m%d') 
+  	</if>
+  </select>
+  <!-- 查看每种产品的收入 -->
+  <select id="getIncomeByProd" parameterType="java.lang.String" resultMap="BaseResultMap">
+	  SELECT sum(p.amount) AMOUNT, o.prodname PRODNAME FROM tb_order_payment p INNER JOIN (
+		SELECT orderid,prodname FROM tb_order_orders WHERE orderid in(
+		SELECT orderid FROM tb_order_payment WHERE amount >0 GROUP BY orderid) ) o
+		ON p.orderid = o.orderid
+		 WHERE p.amount >0 
+		<if test='_parameter == "month"'>
+	  		AND DATE_FORMAT(paymenttime,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m') 
+	  	</if>
+	  	<if test='_parameter == "year"'>
+	  		AND DATE_FORMAT(paymenttime,'%Y') = DATE_FORMAT(CURDATE(),'%Y') 
+	  	</if>
+	  	<if test='_parameter == "day"'>
+	  		AND DATE_FORMAT(paymenttime,'%Y%m%d') = DATE_FORMAT(CURDATE(),'%Y%m%d') 
+	  	</if>
+		 GROUP BY prodname 
+  </select>
+  
+  <!-- 按月查看订单收款金额(今年) -->
+  <select id="getMonthlyIncome" resultMap="BaseResultMap">
+  	SELECT IFNULL(SUM(amount),0) AMOUNT, DATE_FORMAT(PAYMENTTIME,'%m') ID FROM
+	 tb_order_payment WHERE amount &gt;0  AND YEAR(PAYMENTTIME) = YEAR(NOW())
+	GROUP BY  DATE_FORMAT(PAYMENTTIME,'%Y-%m') order by PAYMENTTIME
+  </select>
+  
+  <!-- 按月查看订单退款（含返款）总金额(今年) -->
+  <select id="getMonthlyExpenditure" resultMap="BaseResultMap">
+  	SELECT IFNULL(SUM(amount),0) AMOUNT, DATE_FORMAT(PAYMENTTIME,'%m') ID FROM tb_order_payment 
+	WHERE amount &lt; 0  AND YEAR(PAYMENTTIME) = YEAR(NOW()) 
+	GROUP BY DATE_FORMAT(PAYMENTTIME,'%Y-%m') order by PAYMENTTIME
+  </select>
+  
+  <!-- 按月查看订单返款总金额(今年) -->
+  <select id="getMonthlyBack" resultMap="BaseResultMap">
+  	SELECT IFNULL(SUM(amount),0) AMOUNT, DATE_FORMAT(PAYMENTTIME,'%m') ID FROM tb_order_payment 
+	WHERE amount &lt; 0  AND YEAR(PAYMENTTIME) = YEAR(NOW()) AND PRODNAME = '补贴'
+	GROUP BY  DATE_FORMAT(PAYMENTTIME,'%Y-%m')
+  </select>
+  
+  <!-- 修改订单收款状态   -->
+  <update id="changeOrdersStatus" parameterType="com.icss.bean.TbOrderPayment">
+  	CALL P_insert_paymentChangeOrdersStatus1( #{amount,jdbcType=REAL},#{orderid,jdbcType=VARCHAR});  	
+  </update>  
+</mapper>

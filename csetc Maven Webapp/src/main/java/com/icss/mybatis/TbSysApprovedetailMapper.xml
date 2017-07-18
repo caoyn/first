@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysApprovedetailMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysApprovedetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPROVEID" property="approveid" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+    <result column="NODENAME" property="nodename" jdbcType="VARCHAR" />
+    <result column="NODETYPE" property="nodetype" jdbcType="VARCHAR" />
+    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPROVEID, SORT, NODENAME, NODETYPE, ROLEID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_approvedetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_approvedetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysApprovedetail" >
+    insert into tb_sys_approvedetail (ID, APPROVEID, SORT, 
+      NODENAME, NODETYPE, ROLEID
+      )
+    values ('', #{approveid,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{nodename,jdbcType=VARCHAR}, #{nodetype,jdbcType=VARCHAR}, #{roleid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysApprovedetail" >
+    insert into tb_sys_approvedetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="approveid != null" >
+        APPROVEID,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+      <if test="nodename != null" >
+        NODENAME,
+      </if>
+      <if test="nodetype != null" >
+        NODETYPE,
+      </if>
+      <if test="roleid != null" >
+        ROLEID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="nodename != null" >
+        #{nodename,jdbcType=VARCHAR},
+      </if>
+      <if test="nodetype != null" >
+        #{nodetype,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysApprovedetail" >
+    update tb_sys_approvedetail
+    <set >
+      <if test="approveid != null" >
+        APPROVEID = #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="nodename != null" >
+        NODENAME = #{nodename,jdbcType=VARCHAR},
+      </if>
+      <if test="nodetype != null" >
+        NODETYPE = #{nodetype,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null" >
+        ROLEID = #{roleid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysApprovedetail" >
+    update tb_sys_approvedetail
+    set APPROVEID = #{approveid,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER},
+      NODENAME = #{nodename,jdbcType=VARCHAR},
+      NODETYPE = #{nodetype,jdbcType=VARCHAR},
+      ROLEID = #{roleid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查看某审批流有审批详情  -->
+  <!-- 这里将角色名称装到角色id中  （ ROLENAME ROLEID ）-->
+  <select id="getApproveDetailByAid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select  ID, APPROVEID, SORT, NODENAME, NODETYPE, a.ROLEID FROM tb_sys_approvedetail a
+		INNER JOIN tb_sys_role r
+		ON a.roleid = r.roleid
+  	 	WHERE approveid = #{_parameter,jdbcType=VARCHAR} and status = 1 ORDER BY nodetype , sort
+  </select>
+  
+  <!-- 删除审批流详情 -->
+  <delete id="delByApproveId" parameterType="java.lang.String">
+  	delete from tb_sys_approvedetail where approveid = #{_parameter,jdbcType=VARCHAR} 
+  </delete>
+  
+  <!-- 根据审批流编号查看审批角色  -->
+  <select id="getApproveRole" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT SORT,ROLEID from tb_sys_approvedetail WHERE APPROVEID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 计算审批总数据 -->
+  <select id="sortcount" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	SELECT count(*) FROM tb_sys_approvedetail WHERE APPROVEID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+</mapper>

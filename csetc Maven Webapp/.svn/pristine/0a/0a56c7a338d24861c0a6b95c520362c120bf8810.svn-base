@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbCustomerCallbackMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbCustomerCallback" >
+    <id column="CALLBACKID" property="callbackid" jdbcType="INTEGER" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="VARCHAR" />
+    <result column="RESEAON" property="reseaon" jdbcType="VARCHAR" />
+    <result column="RESEAONTEXT" property="reseaontext" jdbcType="VARCHAR" />
+    <result column="CALLTIME" property="calltime" jdbcType="VARCHAR" />
+    <result column="REPORTUSERID" property="reportuserid" jdbcType="VARCHAR" />
+    <result column="REROPTTEXT" property="reropttext" jdbcType="VARCHAR" />
+    <result column="INTENTION" property="intention" jdbcType="VARCHAR" />
+    <result column="TESTING" property="testing" jdbcType="VARCHAR" />
+    <result column="TIPS" property="tips" jdbcType="VARCHAR" />
+    <result column="TIPDATE" property="tipdate" jdbcType="DATE" />
+    <result column="MEMOC" property="memo" jdbcType="VARCHAR" />
+    <result column="RESOURCEID" property="resourceid" jdbcType="VARCHAR" />
+    <result column="CALLBACKTYPE" property="callbacktype" jdbcType="VARCHAR" />
+    <result column="STATUSC" property="status" jdbcType="VARCHAR" />
+    <association property="customer" resultMap="com.icss.dao.TbCustomerMapper.BaseResultMap"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MAX(CALLBACKID) CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC
+  </sql>
+  <sql id="Cus_Column_List" ><!-- 这里用于客户信息使用tb_customer_assign 时 取名为 c-->
+    ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,RESUMEURL
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_customer_callback
+    where CALLBACKID = #{callbackid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_customer_callback
+    where CALLBACKID = #{callbackid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbCustomerCallback" >
+    insert into tb_customer_callback (CALLBACKID, CUSTOMERID, RESEAON, 
+      CALLTIME, REPORTUSERID, INTENTION, 
+      TESTING, TIPS, TIPDATE, 
+      MEMO, RESOURCEID, CALLBACKTYPE, 
+      STATUS)
+    values (#{callbackid,jdbcType=INTEGER}, #{customerid,jdbcType=VARCHAR}, #{reseaon,jdbcType=VARCHAR}, 
+      #{calltime,jdbcType=VARCHAR}, #{reportuserid,jdbcType=VARCHAR}, #{intention,jdbcType=VARCHAR}, 
+      #{testing,jdbcType=VARCHAR}, #{tips,jdbcType=VARCHAR}, #{tipdate,jdbcType=DATE}, 
+      #{memo,jdbcType=VARCHAR}, #{resourceid,jdbcType=VARCHAR}, #{callbacktype,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbCustomerCallback" >
+    insert into tb_customer_callback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="callbackid != null" >
+        CALLBACKID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="reseaon != null" >
+        RESEAON,
+      </if>
+      <if test="calltime != null" >
+        CALLTIME,
+      </if>
+      <if test="reportuserid != null" >
+        REPORTUSERID,
+      </if>
+      <if test="intention != null" >
+        INTENTION,
+      </if>
+      <if test="testing != null" >
+        TESTING,
+      </if>
+      <if test="tips != null" >
+        TIPS,
+      </if>
+      <if test="tipdate != null" >
+        TIPDATE,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="resourceid != null" >
+        RESOURCEID,
+      </if>
+      <if test="callbacktype != null" >
+        CALLBACKTYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="callbackid != null" >
+        #{callbackid,jdbcType=INTEGER},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test="reseaon != null" >
+        #{reseaon,jdbcType=VARCHAR},
+      </if>
+      <if test="calltime != null" >
+        #{calltime,jdbcType=VARCHAR},
+      </if>
+      <if test="reportuserid != null" >
+        #{reportuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="intention != null" >
+        #{intention,jdbcType=VARCHAR},
+      </if>
+      <if test="testing != null" >
+        #{testing,jdbcType=VARCHAR},
+      </if>
+      <if test="tips != null" >
+        #{tips,jdbcType=VARCHAR},
+      </if>
+      <if test="tipdate != null" >
+        #{tipdate,jdbcType=DATE},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceid != null" >
+        #{resourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="callbacktype != null" >
+        #{callbacktype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbCustomerCallback" >
+    update tb_customer_callback
+    <set >
+      <if test='customerid != null and customerid != ""' >
+        CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test='reseaon != null and reseaon != ""' >
+        RESEAON = #{reseaon,jdbcType=VARCHAR},
+      </if>
+      <if test='calltime != null and calltime != ""' >
+        CALLTIME = #{calltime,jdbcType=VARCHAR},
+      </if>
+      <if test='reportuserid != null and reportuserid != ""' >
+        REPORTUSERID = #{reportuserid,jdbcType=VARCHAR},
+      </if>
+      <if test='intention != null and intention != ""' >
+        INTENTION = #{intention,jdbcType=VARCHAR},
+      </if>
+      <if test='testing != null and testing != ""' >
+        TESTING = #{testing,jdbcType=VARCHAR},
+      </if>
+      <if test='tips != null and tips != ""' >
+        TIPS = #{tips,jdbcType=VARCHAR},
+      </if>
+      <if test='tipdate != null and tipdate != ""' >
+        TIPDATE = #{tipdate,jdbcType=DATE},
+      </if>
+      <if test='memo != null and memo != ""' >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test='resourceid != null and resourceid != ""' >
+        RESOURCEID = #{resourceid,jdbcType=VARCHAR},
+      </if>
+      <if test='callbacktype != null and callbacktype != ""' >
+        CALLBACKTYPE = #{callbacktype,jdbcType=VARCHAR},
+      </if>
+      <if test='status != null and status != ""' >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CALLBACKID = #{callbackid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbCustomerCallback" >
+    update tb_customer_callback
+    set CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      RESEAON = #{reseaon,jdbcType=VARCHAR},
+      CALLTIME = #{calltime,jdbcType=VARCHAR},
+      REPORTUSERID = #{reportuserid,jdbcType=VARCHAR},
+      INTENTION = #{intention,jdbcType=VARCHAR},
+      TESTING = #{testing,jdbcType=VARCHAR},
+      TIPS = #{tips,jdbcType=VARCHAR},
+      TIPDATE = #{tipdate,jdbcType=DATE},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      RESOURCEID = #{resourceid,jdbcType=VARCHAR},
+      CALLBACKTYPE = #{callbacktype,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where CALLBACKID = #{callbackid,jdbcType=INTEGER}
+  </update>
+  <!-- 查看某客户今日是新增过回访记录 -->
+  <select id="getCallbackById" parameterType="java.lang.String" resultType="com.icss.bean.TbCustomerCallback">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_customer_callback
+    where CUSTOMERID = #{_parameter,jdbcType=VARCHAR} and to_days(CALLTIME) = to_days(now()) 
+  </select>
+  <!-- 查看某用户的客户是否有回访记录 -->
+  <select id="getCallbackBySome" parameterType="com.icss.bean.TbCustomerCallback" resultType="com.icss.bean.TbCustomerCallback">
+  	select 
+    CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO, RESOURCEID, CALLBACKTYPE, cb.STATUS
+    from tb_customer_callback cb
+    where CUSTOMERID = #{customerid,jdbcType=VARCHAR} and to_days(CALLTIME) = to_days(now())
+    and  REPORTUSERID = #{reportuserid,jdbcType=VARCHAR} ORDER BY CALLBACKID DESC LIMIT 0,1
+  </select>
+  
+  <!-- 管理员查看需回访客户数据  -->
+ <select id="getAllCallbackinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+ <bind name="id" value="_parameter"/>
+ 	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid	
+ 	where <!-- to_days(TIPDATE) = to_days(now())  and --> cb.STATUS = 0
+ 	group by c.customerid
+ </select> 
+ 
+ <!-- 二级管理员查看需回访的的数据（指定部门分配数据）当前客户拥有者在指定的部门  -->
+ <select id="getSecondCallbackinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	<bind name="deptid" value='"(" + collector + ")"'/>
+	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid	
+ 	where to_days(TIPDATE) = to_days(now()) and cb.STATUS = 0
+	and cb.REPORTUSERID in (
+		SELECT userid FROM tb_sys_user WHERE deptid in  ${deptid} 
+		)
+ 	group by c.customerid 
+ </select> 
+ 
+ 
+ <!-- 部门主管查看需回访客户的信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 ,customerid只是用来传参数判断需要查询的时间-->
+ <select id="getDeptCallbackinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid		
+ 	where to_days(TIPDATE) = to_days(now()) and cb.STATUS = 0
+ 	and cb.REPORTUSERID in (SELECT userid FROM tb_sys_user WHERE deptid LIKE (SELECT CONCAT(deptid,'%')deptid FROM tb_sys_user WHERE userid = #{collector,jdbcType=VARCHAR})) 
+ 	group by c.customerid 
+ </select> 
+ <select id="getDeptCallbackinfo1" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT ID ,sy.level2name SALARYTEXT ,n.level2name NAYIONALITYTEXT ,w.level2name WORKPLACETEXT
+ 		from tb_customer c
+	INNER JOIN (SELECT level2id,level2name FROM tb_sys_basecode WHERE level1id = '18') sy ON c.SALARY = sy.level2id
+	INNER JOIN (SELECT level2id,level2name FROM tb_sys_basecode WHERE level1id = '17') n ON c.NATIONALITY = n.level2id
+	INNER JOIN (SELECT level2id,level2name FROM tb_sys_basecode WHERE level1id = '01') w ON c.WORKPLACE = w.level2id
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+ 	where to_days(TIPDATE) = to_days(now()) and cb.STATUS = 0
+ 	and cb.REPORTUSERID in (SELECT userid FROM tb_sys_user WHERE deptid LIKE (SELECT CONCAT(deptid,'%')deptid FROM tb_sys_user WHERE userid = #{collector,jdbcType=VARCHAR})) 
+ 	group by c.customerid 
+ </select> 
+ 
+ <!-- 电话销售查看自己需回访的客户信息   -->
+ <select id="getCallbackinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid	
+ 	where to_days(TIPDATE) = to_days(now()) and cb.STATUS = 0
+ 	 and cb.REPORTUSERID = #{collector,jdbcType=VARCHAR}
+ 	group by c.customerid 
+ </select> 
+
+ <!-- 普通（其他）用户查看自己的客户信息   -->
+ <select id="getMyCallbackinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid	
+ 	 WHERE cb.REPORTUSERID = #{collector,jdbcType=VARCHAR} and cb.STATUS = 0
+ 		AND to_days(TIPDATE) = to_days(now())
+ 		group by c.customerid 
+ </select> 
+ 
+ 
+ <!-- 获得某客户的回访数据 -->
+ <select id="getCallbackByCid" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC,username REROPTTEXT
+    FROM tb_customer_callback cb INNER JOIN tb_sys_user u 
+	ON cb.reportuserid = u.userid where customerid = #{_parameter,jdbcType=VARCHAR}
+	order by TIPDATE
+ </select>
+ 
+ <!-- 按条件查看客户信息  -->
+ <select id="selectCallbackData" parameterType="com.icss.bean.TbCustomerCallback" resultMap="BaseResultMap">
+ 	SELECT ID, c.CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, c.MEMO, c.STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT,
+		CALLBACKID, cb.CUSTOMERID CUSTOMERID, RESEAON, CALLTIME, REPORTUSERID, INTENTION, TESTING, TIPS, 
+    TIPDATE, cb.MEMO MEMOC, RESOURCEID, CALLBACKTYPE, cb.STATUS STATUSC ,re.username REROPTTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	INNER JOIN tb_customer_callback cb ON cb.customerid = c.CUSTOMERID
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) re ON cb.REPORTUSERID = re.userid	
+ 	 WHERE cb.REPORTUSERID = #{reportuserid,jdbcType=VARCHAR} and cb.STATUS = 0
+ 		AND TIPDATE BETWEEN #{calltime,jdbcType=VARCHAR} AND #{memo,jdbcType=VARCHAR}
+ 	group by c.customerid 
+ </select>
+</mapper>

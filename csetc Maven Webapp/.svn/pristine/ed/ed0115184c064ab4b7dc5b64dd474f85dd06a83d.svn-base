@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- 自动扫描所有注解该路径 -->   
+	<context:component-scan base-package="com.icss.*" />
+
+	<!-- 加载外部属性配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入  --> 
+	 <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+	<!-- ============================== 数据库配置 ==================================== -->
+		
+	<!-- 配置数据源 采用阿里的开源连接池druid-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!-- 基本属性 url、user、password -->  
+        <property name="driverClassName" value="${db.driver}" />  
+        <property name="url" value="${db.url}" />  
+        <property name="username" value="${db.user}" />  
+        <property name="password" value="${db.password}" />  
+        <property name="initialSize" value="1" />  
+        <property name="minIdle" value="1" />   
+        <property name="maxActive" value="20" />  
+        <property name="maxWait" value="60000" />
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 超过时间限制多长； -->
+        <property name="removeAbandonedTimeout" value="180" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
+        <property name="validationQuery" value="SELECT 1" />
+        <!-- 申请连接的时候检测 -->
+        <property name="testWhileIdle" value="true" />
+        <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+        <property name="testOnBorrow" value="false" />
+        <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
+        <property name="testOnReturn" value="false" />
+    </bean>
+    <!-- 数据源配置 c3p0 由于性能低下，所有废除，用性能更高的druid-->
+	<!-- bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db.driver}" />
+		<property name="jdbcUrl" value="${db.url}" />
+		<property name="user" value="${db.user}" />
+		<property name="password" value="${db.password}" />
+	</bean-->
+	
+	
+	
+	<!-- ================================ MyBatis SqlSession配置 ========================================= -->
+	<!-- 使用SqlSessionFactoryBean工厂产生SqlSession对象，方便后期注入Dao -->
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.icss.bean" />
+		<property name="mapperLocations" value="classpath:com/icss/mybatis/*.xml" />
+	</bean>
+	
+	<!--  mybatis 的 Mapper类及配置文件 扫描配置-->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.icss.*" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	
+	<!-- ================================= 事务控制相关 ============================================= -->
+   	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">   
+    	<property name="dataSource" ref="dataSource"></property>
+ 	</bean>   
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException"/>
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.RuntimeException" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			
+			<tx:method name="find*" propagation="SUPPORTS"/>
+			<tx:method name="get*" propagation="SUPPORTS"/>
+			<tx:method name="select*" propagation="SUPPORTS"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="pc" expression="execution(* *.*.*(..))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+	</aop:config>
+	
+</beans>

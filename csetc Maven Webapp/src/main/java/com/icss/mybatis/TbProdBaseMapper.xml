@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbProdBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbProdBase" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="PRODTYPE" property="prodtype" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="PRODVER" property="prodver" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <!-- 一对多关系  -->
+    <collection property="proddetail" javaType="com.icss.bean.TbProdDetail">
+    	<id column="DID" property="did" jdbcType="VARCHAR" />
+	    <result column="PID" property="prodid" jdbcType="VARCHAR" />
+	    <result column="SUBPRODID" property="subprodid" jdbcType="VARCHAR" />
+	    <result column="SUBPRODNAME" property="subprodname" jdbcType="VARCHAR" />
+	    <result column="SUBPRODPRICE" property="subprodprice" jdbcType="REAL" />
+	    <result column="SUBPRODSALEPRICE" property="subprodsaleprice" jdbcType="REAL" />
+	    <result column="SUBPRODMINPRICE" property="subprodminprice" jdbcType="REAL" />
+	    <result column="DISCOUNTENABLE" property="discountenable" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <resultMap type="com.icss.bean.TbProdBase" id="ProdSelectMap">
+  	<result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PRODID, PRODNAME, PRODTYPE, CREATETIME, PRODVER, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_prod_base
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_prod_base
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbProdBase" >
+    insert into tb_prod_base (ID, PRODID, PRODNAME, 
+      PRODTYPE, CREATETIME, PRODVER, 
+      STATUS)
+    values ('', #{prodid,jdbcType=VARCHAR}, #{prodname,jdbcType=VARCHAR}, 
+      #{prodtype,jdbcType=VARCHAR}, NOW(), #{prodver,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbProdBase" >
+    insert into tb_prod_base
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="prodid != null" >
+        PRODID,  CREATETIME,
+      </if>
+      <if test="prodname != null" >
+        PRODNAME,
+      </if>
+      <if test="prodtype != null" >
+        PRODTYPE,
+      </if>
+      <if test="prodver != null" >
+        PRODVER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},now(),
+      </if>
+      <if test="prodname != null" >
+        #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="prodtype != null" >
+        #{prodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="prodver != null" >
+        #{prodver,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbProdBase" >
+    update tb_prod_base
+    <set >
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="prodtype != null" >
+        PRODTYPE = #{prodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prodver != null" >
+        PRODVER = #{prodver,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbProdBase" >
+    update tb_prod_base
+    set PRODID = #{prodid,jdbcType=VARCHAR},
+      PRODNAME = #{prodname,jdbcType=VARCHAR},
+      PRODTYPE = #{prodtype,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      PRODVER = #{prodver,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查看所有的产品以及对应的详情  2017-04-10 lm -->
+  <!-- 包含所有产品以及子产品 注意此处的did是指产品详情表的id-->
+  <select id="getAllProductData" resultMap="BaseResultMap">
+	 SELECT pb.ID, pb.PRODID, PRODNAME, PRODTYPE, CREATETIME, PRODVER, STATUS, 
+	pd.ID DID, pd.PRODID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, 
+	SUBPRODMINPRICE, DISCOUNTENABLE
+	FROM tb_prod_base pb INNER JOIN tb_prod_detail pd ON pb.prodid = pd.subprodid
+  </select>
+  
+  <!-- 查看是否存在该产品 2017-04-12 lm -->
+  <select id="judgeExistProduct" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT  <include refid="Base_Column_List" /> FROM tb_prod_base WHERE prodid = #{_parameter,jdbcType=VARCHAR} OR prodname = #{_parameter,jdbcType=VARCHAR}  	
+  </select>
+  <!-- 根据产品编号获得产品信息  2017-04-13 lm -->
+  <select id="getProductByProductid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT pb.ID, pb.PRODID, PRODNAME, PRODTYPE, CREATETIME, PRODVER, STATUS, 
+		pd.ID DID, pd.PRODID PID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, 
+		SUBPRODMINPRICE, DISCOUNTENABLE 
+	  FROM tb_prod_base pb INNER JOIN tb_prod_detail pd ON pb.prodid = pd.subprodid
+	  WHERE pb.prodid = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+   <!-- 根据产品编号查看更新产品信息 -->
+    <update id="updateByProdid" parameterType="com.icss.bean.TbProdBase" >
+    update tb_prod_base
+    <set >
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="prodtype != null" >
+        PRODTYPE = #{prodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prodver != null" >
+        PRODVER = #{prodver,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRODID = #{prodid,jdbcType=VARCHAR}
+  </update>
+   
+   <!-- 根据产品编号删除 -->
+   <delete id="delProdByPid" parameterType="java.lang.String">
+   		delete from tb_prod_base
+   		 where PRODID = #{_parameter,jdbcType=VARCHAR}
+   </delete>
+   
+   <!-- 根据产品子编号查看产品 -->
+   <!-- 这里将level2name装到 PRODTYPE 产品类型对应的中文 -->
+   <select id="getProductBySubid" parameterType="java.lang.String" resultMap="BaseResultMap">
+   	SELECT pb.ID, pb.PRODID, PRODNAME, level2name PRODTYPE, CREATETIME, PRODVER, pb.STATUS, 
+		pd.ID DID, pd.PRODID PID, SUBPRODID, SUBPRODNAME, SUBPRODPRICE, SUBPRODSALEPRICE, 
+		SUBPRODMINPRICE, DISCOUNTENABLE 
+	  FROM tb_prod_base pb INNER JOIN tb_prod_detail pd ON pb.prodid = pd.subprodid
+	  INNER JOIN (SELECT * FROM tb_sys_basecode WHERE LEVEL1ID = '02' ) l ON l.level2id = PRODTYPE
+	  WHERE pd.subprodid = #{_parameter,jdbcType=VARCHAR}
+   </select>
+   
+   <!-- 查看当前新增产品的编号 -->
+   <select id="tb_prod_base_id" resultType="java.lang.String">
+   	select F_currval('tb_prod_base_id'); 
+   </select>
+   
+  <!-- 查看所有产品信息 -->
+  <select id="getAllProdData" resultMap="BaseResultMap">
+  	 SELECT pb.ID, pb.PRODID, PRODNAME, PRODTYPE, CREATETIME, PRODVER, STATUS, 
+	pd.ID DID, pd.PRODID, SUBPRODID, GROUP_CONCAT(SUBPRODNAME) SUBPRODNAME, SUM(SUBPRODPRICE) SUBPRODPRICE,
+	 SUM(SUBPRODSALEPRICE) SUBPRODSALEPRICE, SUM(SUBPRODMINPRICE) SUBPRODMINPRICE,SUM( DISCOUNTENABLE) DISCOUNTENABLE
+	FROM tb_prod_base pb left JOIN tb_prod_detail pd ON pb.prodid = pd.prodid
+	GROUP BY pb.prodid
+  </select>
+   
+   <!-- 根据产品编号查看产品数据  -->
+    <select id="getProdByPid" resultType="com.icss.bean.TbProdBase" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_prod_base
+    where PRODID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 修改产品信息  -->
+  <update id="updProdByPid" parameterType="com.icss.bean.TbProdBase">
+  	update tb_prod_base
+    <set >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+        PRODTYPE = #{prodtype,jdbcType=VARCHAR},
+        PRODVER = PRODVER +1,
+        STATUS = #{status,jdbcType=VARCHAR},
+    </set>
+    where PRODID = #{prodid,jdbcType=VARCHAR}
+  </update>
+  <!-- 查看所有可以使用的产品的数据(下拉框) -->
+  <select id="getAllEnableProd" resultMap="ProdSelectMap">
+  	select DISTINCT pb.PRODID,PRODNAME from tb_prod_base pb inner join tb_prod_detail pd on pb.prodid = pd.prodid where status = 1
+  </select>
+</mapper>

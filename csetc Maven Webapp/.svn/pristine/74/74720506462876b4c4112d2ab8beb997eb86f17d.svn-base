@@ -1,0 +1,785 @@
+/**
+ * 文件名: callback.js
+ * 描述:客户信息
+ * 所属:湖南中软计算机系统服务有限公司
+ * 开发人员：李敏 
+ * 创建时间：2017-05-16
+ */
+$(document).ready(function(){
+	operBtn();
+	fillTableData();
+	var messageOpts = {
+			closeButton : true, //是否显示关闭按钮
+			debug : false, //是否使用debug模式
+			positionClass: "toast-top-right",  
+			//onclick : null,
+			showDuration : "40", //显示的动画时间
+			hideDuration : "1000", //消失的动画时间
+			timeOut: "10000", //展现时间
+			extendedTimeOut : "1000", //加长展示时间
+			showEasing : "swing", //显示时的动画缓冲方式
+			hideEasing : "linear", //消失时的动画缓冲方式
+			showMethod : "fadeIn", //显示时的动画方式
+			hideMethod : "fadeOut" //消失时的动画方式
+		};
+	//toastr.options = messageOpts; //消息通知插件配置
+	
+	
+});
+
+//获得表格数据
+function getAllCustomerData(){
+	var json = [];
+	$.ajax({
+		type:"POST",
+		url:"../callback/getCallbackDatainfo.do",
+		dataType:"json",
+		async:false,
+		success:function(data){
+			//处理json数据
+			console.log(JSON.parse(data));
+			$.each(JSON.parse(data), function(i, o) {
+				var c = o.customer;
+				c.majortext = selectText("major",c.major);
+				c.educationtext = selectText("education",c.education);
+				c.sourcetext = selectText("source",c.source);
+				c.customertypetext = selectText("custype",c.customertype);
+				c.coursetext = selectText("cuscourse",c.course);
+				c.jobobjectivetext = selectText("jobobjective",c.jobobjective);
+				c.politicalstatustext = selectText("politicalstatus",c.politicalstatus);
+				c.nationalitytext = selectText("nationality",c.nationality);
+				c.maritalstatustext = selectText("maritalstatus",c.maritalstatus);
+				c.workplacetext = selectText("maritalstatus",c.workplace);
+				c.salarytext = selectText("salary",c.salary);
+				c.reseaontext = selectText("notcusreservation",o.reseaon);
+				c.reropttext = o.reropttext;
+				c.testing = o.testing;
+				c.intention = o.intention;
+				c.tips = o.tips;
+				c.callbackid = o.callbackid;
+				c.statusc = o.status;
+				c.memoc = o.memo;
+				c.resourceid = o.resourceid;
+				c.callbacktype = o.callbacktype;
+				c.tipdate = new Date(o.tipdate).format('yyyy-MM-dd');
+				c.calltime = new Date(o.calltime).format('yyyy-MM-dd');
+				json.push(c);
+            });
+		},
+		error:function(){
+			toastr.error("出错啦");
+		}
+	});
+	console.log(json);
+	return json;
+}
+
+//客户信息展示
+//查看表格数据
+function fillTableData(){
+	var json = getAllCustomerData();
+	$('#customerCallbackData').bootstrapTable({
+	    data:json,
+	    striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: true,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        toolbar:"#customerCallbacktoolbar",
+       // queryParams: oTableInit.queryParams,//传递参数（*）
+        sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 20,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: false,
+        showColumns: true,                  //是否显示所有的列
+        showRefresh: true,                  //是否显示刷新按钮
+        minimumCountColumns: 10,             //最少允许的列数
+        //clickToSelect: true,                //是否启用点击选中行
+        height: 670,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+        uniqueId: "customerid",                     //每一行的唯一标识，一般为主键列
+        idField:"customerid",
+        showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+        cardView: false,                    //是否显示详细视图
+        detailView: false,                   //是否显示父子表
+	    columns: [{
+	    	checkbox:true,
+	    },
+	    {
+	        field: 'callbackid',
+	        title: '编号',
+	        sortable:true
+	    }, {
+	    	field: 'customername',
+	    	title: '姓名',
+	    	sortable:true
+	    }, {
+	    	field: 'sex',
+	    	title: '性别',
+	    	formatter:function(value,row,index){
+	    		if(value == 0){
+	    			return "女";
+	    		}else{
+	    			return "男";
+	    		}
+	    	},
+	    	sortable:true
+	    }, {
+	    	field: 'telephone',
+	    	title: '电话',
+	    	sortable:true
+	    }, {
+	    	field: 'email',
+	    	title: 'qq/邮箱',
+	    	sortable:true
+	    }, {
+	    	field: 'school',
+	    	title: '学校',
+	    	sortable:true
+	    }, {
+	    	field: 'major',
+	    	title: '专业',
+	    	sortable:true
+	    }, {
+			field: 'educationtext',
+			title: '学历',
+			sortable:true
+	    }, {
+	    	field: 'reseaontext',
+	    	title: '回访原因',
+			sortable:true
+	    }, {
+	    	field: 'tipdate',
+	    	title: '提醒时间',
+			sortable:true
+	    }, {
+	    	field: 'tips',
+	    	title: '提醒内容',
+			sortable:true
+	    }, {
+	    	field: 'customertypetext',
+	    	title: '客户类型',
+			sortable:true
+	    }, {
+	    	field: 'coursetext',
+	    	title: '意向课程',
+			sortable:true
+	    }, {
+	    	field: 'jobobjectivetext',
+	    	title: '求职意向',
+			sortable:true
+	    }, {
+	    	field: 'birthday',
+	    	title: '年龄',
+			sortable:true,
+			formatter:function(value,row,index){
+	    		return computeAge(value);
+	    	}
+	    }, {
+	    	field: 'placeofbirth',
+	    	title: '户口所在地',
+			sortable:true
+	    }, {
+	    	field: 'address',
+	    	title: '现居住地',
+			sortable:true
+	    }, {
+	    	field: 'politicalstatustext',
+	    	title: '政治面貌',
+			sortable:true
+	    }, {
+	    	field: 'nationalitytext',
+	    	title: '民族',
+			sortable:true
+	    }, {
+	    	field: 'maritalstatustext',
+	    	title: '婚育状况',
+			sortable:true
+	    }, {
+	    	field: 'workservice',
+	    	title: '工作年限',
+			sortable:true
+	    }, {
+	    	field: 'workexp',
+	    	title: '工作经历',
+			sortable:true
+	    }, {
+	    	field: 'workplacetext',
+	    	title: '期望工作地点',
+			sortable:true
+	    }, {
+	    	field: 'salarytext',
+	    	title: '期望薪资',
+			sortable:true
+	    }, {
+	    	field: 'ecp',
+	    	title: '紧急联系人方式',
+			sortable:true
+	    }, {
+	    	field: 'bank',
+	    	title: '开户行',
+			sortable:true
+	    }, {
+	    	field: 'bankno',
+	    	title: '银行卡号',
+			sortable:true
+	    }, {
+	    	field: 'statusc',
+	    	title: '状态',
+	    	formatter:function(value,row,index){
+	    		if(value == 0){
+	    			return "还没有进行此次回访";
+	    		}else if(value == 1){
+	    			return "已提交预约";
+	    		}else if(value == 2){
+	    			return "再次回访"
+	    		}
+	    	}
+	    }, {
+	    	field: 'callbacktype',
+	    	title: '回访来源',
+	    	formatter:function(value,row,index){
+	    		if(value == 1){
+	    			return "分配给电话咨询后回访";
+	    		}else if(value == 2){
+	    			return "预约后回访";
+	    		}else if(value == 3){
+	    			return "咨询后回访"
+	    		}else if(value == 4){
+	    			return "回访后回访"
+	    		}
+	    	}
+		}],
+		onDblClickRow:function(row,ele,field){//双击行
+			//customerinfoUpdAndShow(row);
+		}
+	});
+	
+	hideTableCol();
+}
+
+//隐藏表格列
+function hideTableCol(){
+	$("#customerCallbackData").bootstrapTable("hideColumn","email");
+	$("#customerCallbackData").bootstrapTable("hideColumn","operator");
+	$("#customerCallbackData").bootstrapTable("hideColumn","collector");
+	$("#customerCallbackData").bootstrapTable("hideColumn","education");
+	$("#customerCallbackData").bootstrapTable("hideColumn","source");
+	$("#customerCallbackData").bootstrapTable("hideColumn","customertype");
+	$("#customerCallbackData").bootstrapTable("hideColumn","course");
+	$("#customerCallbackData").bootstrapTable("hideColumn","jobobjectivetext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","placeofbirthtext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","address");
+	$("#customerCallbackData").bootstrapTable("hideColumn","politicalstatustext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","nationalitytext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","maritalstatustext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","workservice");
+	$("#customerCallbackData").bootstrapTable("hideColumn","workexp");
+	$("#customerCallbackData").bootstrapTable("hideColumn","workplacetext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","salarytext");
+	$("#customerCallbackData").bootstrapTable("hideColumn","ecp");
+	$("#customerCallbackData").bootstrapTable("hideColumn","bank");
+	$("#customerCallbackData").bootstrapTable("hideColumn","bankno");
+	$("#customerCallbackData").bootstrapTable("hideColumn","memo");
+	$("#customerCallbackData").bootstrapTable("hideColumn","status");
+	//$("#customerCallbackData").bootstrapTable("hideColumn","birthday");
+	$("#customerCallbackData").bootstrapTable("hideColumn","placeofbirth");
+	$("#customerCallbackData").bootstrapTable("hideColumn","customertypetext");
+}
+
+//页面上可操作的按钮
+function operBtn(){
+//	operstr//可页面上可操作的按钮
+	//将所有操作按钮禁用
+	$("#customerCallbacktoolbar button").attr("disabled", true);
+	var operbtns = operstr.split("|");//可操作的按钮
+	var btns = $("#customerCallbacktoolbar button"); //页面上所按钮
+	$.each(btns,function(i,o){
+		var fun = $(this).attr("onclick");//获得每个按钮的onclick属性值
+		if(typeof fun !="undefined"){
+			for(var i = 0; i < operbtns.length; i++){
+				//alert(fun.toLocaleLowerCase().substring(0,6));
+				if(operbtns[i] == "1" && fun.toLocaleLowerCase().substring(0,3).indexOf("add") == 0){
+					$(this).removeAttr("disabled");
+				}
+				if(operbtns[i] == "2" && fun.toLocaleLowerCase().substring(0,3).indexOf("upd") == 0){
+					$(this).removeAttr("disabled");
+				}
+				if(operbtns[i] == "3" && fun.toLocaleLowerCase().substring(0,3).indexOf("del") == 0){
+					$(this).removeAttr("disabled");
+				}
+				if(operbtns[i] == "4" && fun.toLocaleLowerCase().substring(0,3).indexOf("qry") == 0){
+					$(this).removeAttr("disabled");
+				}
+				if(operbtns[i] == "5" && fun.toLocaleLowerCase().substring(0,6).indexOf("upload") == 0){
+					$(this).removeAttr("disabled");
+				}
+				if(operbtns[i] == "6" && fun.toLocaleLowerCase().substring(0,6).indexOf("assign") == 0){
+					
+					$(this).removeAttr("disabled");
+				}
+			}
+		}
+	})
+}
+
+
+//勾选预约人数
+function addcheckReservationNum(){
+	var bychecked= $('#customerCallbackData').bootstrapTable('getSelections');
+	if(bychecked.length != 1){
+		toastr.error("请选择一个您要预约的人");
+	}else{
+		var customerid = "";
+		$.each(bychecked,function(index, i){//客户序号
+			customerid = i.customerid ;
+		});
+		if(getExistReservation(customerid,"该客户有未处理完的预约记录，不能再次预约")){//检查该客户是否有未处理完的预约记录
+			customerReservationModalShow(bychecked[0].customerid,bychecked[0].callbackid);//展示预约客户模态框
+		}; 
+	}
+}
+//预约客户展示
+function customerReservationModalShow(customerid,callbackid){
+	$("#reservationForm input[name='callbackid']").val(callbackid);
+	$("#reservationForm input[name='customerid']").val(customerid);
+	fillselectData("cusreservation","#reservationForm select[name='purpose']");
+	fillselectData("arriveaddress","#reservationForm select[name='zone']");
+	selectUser("#receiver_data");
+	$("#reservationModal").modal("show")
+}
+//预约客户
+function addCustomerReservation(){
+	if(!$("#reservationForm").valid()){
+		return false;
+	}
+    //将日期数据转成时间戳	
+	var date = $("#reservationForm input[name='expect']").val();
+	date = new Date(Date.parse(date.replace(/-/g, "/")));
+	date = date.getTime();
+	$.ajax({
+		type:"POST",
+		url:"../reservation/addCustomerReservation.do?expect=" + date +"&receiver=" + $("#receiver_data").attr("data-id"),//新增预约记录
+		dataType:"json",
+		dataType:"json",
+		async:false,
+		data:$("#reservationForm").serialize(),
+		success:function(data){
+			if(data == 1){
+				$.ajax({
+					type:"POST",
+					url:"../callback/updCallbackStatus.do?callbackid=" + $("#reservationForm input[name='callbackid']").val() +"&status=1",//修改回访状态
+					async:false,
+					success:function(d){
+						toastr.success("预约客户成功"); 
+						$("#reservationModal").modal("hide");
+						$("#customerCallbackData").bootstrapTable("load",getAllCustomerData());
+					}
+				});
+				
+			}
+		},
+		error:function(){
+			toastr.error("预约数据录入失败");
+		}
+	})
+}
+
+//处理需回访数据
+function updHandleCallback(){
+	var bychecked= $('#customerCallbackData').bootstrapTable('getSelections');
+	if(bychecked.length != 1){
+		toastr.error("请选择一条数据");
+	}else{
+		if(getExistReservation(bychecked[0].customerid,"该客户有未处理完的预约，暂时不能新增待回访记录")){
+			showCallbackModal(getCallbackBySome(bychecked[0].customerid),JSON.parse(JSON.stringify(bychecked)));
+		}
+	}
+}
+
+//检查某客户是否已经有未处理完的预约记录
+function getExistReservation(customerid,str){
+	var resule = false;
+	$.ajax({
+		type:"POST",
+		url:"../reservation/getExistReservation.do?customerid=" + customerid ,
+		dataType:"json",
+		async:false,
+		success:function(data){
+			if(data > 0){
+				toastr.warning(str); 
+			}else{
+				resule = true;
+			}
+		},error:function(){
+			toastr.error("数据处理失败哦");
+		}
+	});
+	return resule;
+}
+
+//查看某客户是否有回访记录（今日新增）
+function getCallbackBySome(customerid){
+	var json ;
+	$.ajax({
+		type:"POST",
+		url:"../callback/getCallbackBySome.do",
+		dataType:"json",
+		data:{"customerid":customerid},
+		async:false,
+		success:function(data){
+			json = JSON.parse(data);
+			if(json == null || json == 'null'){
+				json = "";
+			}
+		}
+	});
+	return json;
+}
+//新增某客户的回访记录
+function addCallbackinfo(){
+	if($("#callbackForm").valid()){
+		$.ajax({
+			type:"POST",
+			url:"../callback/addCallbackinfo.do",//态新增回访记录
+			dataType:"json",
+			data:$("#callbackForm").serialize(),
+			async:false,
+			success:function(data){
+				$.ajax({
+					type:"POST",
+					url:"../callback/updCallbackStatus.do?callbackid=" + $("#callbackForm input[name='callbackid']").val() +"&status=2",//修改回访状
+					dataType:"json",
+					async:false,
+					success:function(d){
+						toastr.success("新增客户回访数据成功");
+						$("#callbackModal").modal("hide");
+						$("#customerCallbackData").bootstrapTable("load",getAllCustomerData());
+					}
+				});
+				
+			},
+			error:function(){
+				toastr.error("新增回访记录出错");
+			}
+		});
+	}
+	
+}
+//修改某客户的回访记录
+function updCallbackById(){
+	if($("#callbackForm").valid()){
+		$.ajax({
+			type:"POST",
+			url:"../callback/updCallbackById.do",
+			dataType:"json",
+			async:false,
+			data:$("#callbackForm").serialize(),
+			success:function(data){
+				toastr.success("修改客户回访数据成功");
+				$("#callbackModal").modal("hide");
+				$("#customerCallbackData").bootstrapTable("load",getAllCustomerData());
+			}
+		});
+	}
+}
+
+//弹出客户回访数据模态框
+function showCallbackModal(json,status){
+	console.log(status)
+	/*if(json!=null && json != ""){//修改
+		$("#callbackForm input[name='callbackid']").val(json.callbackid);
+		$("#callbackForm input[name='resourceid']").val("");
+		$("#callbackForm input[name='callbacktype']").val("");
+		$("#callbackForm input[name='customerid']").val("");
+		$("#callbackForm input[name='tips']").val(json.tips);
+		$("#callbackForm input[name='tipdatetime']").val(new Date(json.tipdate).format('yyyy-MM-dd'));
+		$("#callbackForm textarea[name='memo']").val(json.memo);
+		fillselectData("notcusreservation","#callbackForm select[name='reseaon']",json.reseaon);
+		//默认选择的单选按钮
+		if(json.intention == 0){//意向度
+			$("#callbackForm input[name=intention][value='0']").prop("checked",true);
+		}else{
+			$("#callbackForm input[name=intention][value='1']").prop("checked",true);
+		}
+		if(json.testing == 0){//是否测评
+			$("#callbackForm input[name=testing][value='0']").prop("checked",true);
+		}else{
+			$("#callbackForm input[name=testing][value='1']").prop("checked",true);
+		}
+		$("#callbackModal .btn-primary").attr("onclick","updCallbackById()")
+	}else{//新增
+*/	
+		$("#callbackForm input[name='callbackid']").val(status[0].callbackid);
+		$("#callbackForm input[name='resourceid']").val(status[0].callbackid);
+		$("#callbackForm input[name='callbacktype']").val("4");
+		$("#callbackForm input[name='customerid']").val(status[0].customerid);
+		$("#callbackModal .btn-primary").attr("onclick","addCallbackinfo()");
+		fillselectData("notcusreservation","#callbackForm select[name='reseaon']");
+	/*}*/
+	$("#callbackForm").valid();
+	$("#callbackModal").modal("show");
+}
+
+//放弃这个回访数据
+function updCallbackStatus(){
+	var bychecked= $('#customerCallbackData').bootstrapTable('getSelections');
+	if(bychecked.length != 1){
+		toastr.error("请选择一条数据");
+	}else{
+		swal({
+	        title: "您确定要放弃该数据吗？",
+	        type: "warning",
+	        showCancelButton: true,
+	        cancelButtonText:"取消",
+	        confirmButtonText: "确定",
+	        closeOnConfirm: false
+	    }, function () {
+			$.ajax({
+				type:"POST",
+				url:"../callback/updCallbackStatus.do",
+				dataType:"json",
+				async:false,
+				data:{"callbackid":bychecked[0].callbackid,"status":"3"},
+				success:function(data){
+//					toastr.success("放弃该回访数据成功");
+					swal( "放弃访数据成功", "共计"+ data + "条数据", "success");
+					$("#customerCallbackData").bootstrapTable("load",getAllCustomerData());
+					$("#callbackModal").modal("hide");
+				}
+			})
+	    })
+	}
+}
+
+//新增客户批注展示
+function updRemarkShow(){
+	
+	var tabledata = $("#customerCallbackData").bootstrapTable("getSelections");
+	if(tabledata.length!=1){
+		toastr.warning("请选择一条数据再进行此操作");
+		return false;
+	}
+	//判断页面中是否有客户批注模态框
+	if((typeof $("#remarkModal").html()) != "undefined"){
+		$("#remarkModal").remove();
+	}
+	//构造模态框代码
+	var modalHtml = 
+	'<div class="modal inmodal" id="remarkModal" tabindex="-1" role="dialog" aria-hidden="true">'+
+    '<div class="modal-dialog ">'+
+        '<div class="modal-content animated fadeIn">'+
+            '<div class="modal-header">'+
+                '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>'+
+                '</button>'+
+                '<h4 class="modal-title">标记客户</h4>'+
+            '</div>'+
+            '<div class="row">'+
+             '<div class="col-sm-12">'+
+               '<div class="ibox float-e-margins">'+
+                   '<div class="ibox-content">'+
+						'<form id="remarkcustomerForm" enctype="multipart/form-data" method="post" class="form-horizontal">'+
+							'<input type="hidden" name="customerid" value="'+tabledata[0].customerid+'">'+
+							'<div class="form-group" >'+
+							 	'<label class="col-sm-3 control-label">客户所属阶段：</label>'+
+	 	 						'<div class="col-sm-6">'+
+	 	 							'<select name="servicetype" id="servicetype" class="form-control">'+
+	 	 							'</select>'+
+	 							'</div>'+
+	 						'</div>'+
+							'<div class="form-group">'+
+							 	'<label class="col-sm-3 control-label">阶段对应类型：</label>'+
+	 	 						'<div class="col-sm-6">'+
+	 	 							'<select name="remarktype" id="remarktype" class="form-control"></select>'+
+	 							'</div>'+
+	 						'</div>'+
+							'<div class="form-group" >'+
+							 	'<label class="col-sm-3 control-label">附件：</label>'+
+	 	 						'<div class="col-sm-6">'+
+	 	 							'<input type="text" name="attachment" class="form-control">'+
+	 							'</div>'+
+	 						'</div>'+
+							'<div class="form-group" >'+
+							 	'<label class="col-sm-3 control-label">备注：</label>'+
+	 	 						'<div class="col-sm-6">'+
+	 	 							'<textarea class="form-control" rows="" cols="" name="memo" required="required"></textarea>'+
+	 							'</div>'+
+	 						'</div>'+
+						'</form>'+
+                    '</div>'+
+                   '</div>'+
+                 '</div>'+
+             '</div>'+
+             '<div class="modal-footer">'+
+                ' <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>'+
+                ' <button type="button" class="btn btn-primary" onclick="addRemark()">确定</button>'+
+            '</div>'+
+        '</div>'+
+    '</div>'+
+'</div>';
+	
+	
+	//将模态框放入页面中
+	$("body").append(modalHtml);
+	//客户所属阶段的对应的类型
+	//fillselectData("remarktype","#remarkcustomerForm select[name='remarktype']");
+	//客户所属阶段联动阶段类型
+	addressInit("servicetype","remarktype","1004","");
+	//显示模态框
+	$("#remarkModal").modal("show");
+}
+
+//新增客户批注
+function addRemark(){
+	if(!$("#remarkcustomerForm").valid()){
+		return false;
+	}
+	$.ajax({
+		type:"POST",
+		url:"../remark/addRemark.do",
+		data:$("#remarkcustomerForm").serialize(),
+		dataType:"json",
+		async:false,
+		success:function(data){
+			toastr.success("新增客户批注成功");
+			$("#remarkModal").modal("hide");
+		},
+		error:function(){
+			toastr.error("新增客户数据失败");
+		}
+	})
+}
+
+//查看历史批注
+function qrySeeHistoryRemark(){
+	var d= $('#customerCallbackData').bootstrapTable('getSelections');
+	if(d.length != 1){
+		toastr.warning("请选择一条数据再操作");
+		return false;
+	}
+	$.ajax({
+		type:"post",
+		url:"../remark/qryCustomerRemrk.do",
+		data:{"customerid":d[0].customerid},
+		dataType:"json",
+		async:false,
+		success:function(data){
+			var json = JSON.parse(data);
+			if(json.length == 0){
+				toastr.info("没有相关客户数据");
+			}else{
+				var stageslist = servicetype.stagesList;
+				$.each(json,function(i,o){
+					$.each(stageslist,function(j,p){
+						if(o.servicetype == p.value){
+							o.servicetypetext = p.stage;
+							$.each(p.stageList,function(k,b){
+								if(o.remarktype == b.value){
+									o.remarktypetext = b.stage;
+								}
+							});
+						}
+					});
+					o.time = new Date(o.remarktime).format("yyyy-MM-dd hh:mm:ss");
+				});
+				//console.log(json);
+				createTimeaxisData(json);
+			}
+		},
+		error:function(){
+			toastr.error("获得数据失败");
+		}
+	});
+}
+
+//生成时间轴的数据
+function createTimeaxisData(data){
+	var ta = "";
+	$.each(data,function(i,o){ 
+		ta += 	'<div class="timeline">'+
+					'<div class="timeline-content">'+
+						'<span class="date">'+
+							'<span class="month">'+ o.time +'</span>'+
+						'</span>'+
+						'<h4 class="title">'+ o.servicetypetext +'</h4>'+
+						'<p class="description">'+o.memo+'</p>'+
+						'<div class="footer text-right"> <span>'+o.username+'</span></div>'+
+					'</div>'+
+				'</div>';
+	});
+	$("#mytimeaxis").html(ta);
+	$("#customerRemarkModal").modal("show");
+}
+
+//查看简历详情
+function qryResumeDetail(){
+	var d = $("#customerCallbackData").bootstrapTable("getSelections");
+	if(d.length!=1){
+		toastr.error("请选择一条数据再操作");
+		return false;
+	}
+	if(d[0].resumeurl == "" || (typeof d[0].resumeurl) == "undefined" || d[0].resumeurl == 'null' ||  d[0].resumeurl == null){
+		toastr.warning("该客户还没有上传简历照片，无法查看");
+		return false;
+	}
+	var imghtml = '<img alt="" src="'+ basepath + d[0].resumeurl+'">';
+	window.open (basepath + d[0].resumeurl,'newwindow','height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')
+	/*$("#resumeImage").html(imghtml);
+	$("#resumeImageModal").modal("show");*/
+}
+
+//查看回访记录弹出框
+function qryCallbackDataShow(){
+	$("#selectCallbackDataModal").modal("show");
+}
+//获得带条件的回访记录
+function selectCallbackData(){
+	
+	$.ajax({
+		type:"post",
+		url:"../callback/selectCallbackData.do",
+		data:$("#selectCalbackDataForm").serialize(),
+		dataType:"json",
+		async:false,
+		success:function(data){
+			var json = [];
+			$.each(JSON.parse(data), function(i, o) {
+				var c = o.customer;
+				c.majortext = selectText("major",c.major);
+				c.educationtext = selectText("education",c.education);
+				c.sourcetext = selectText("source",c.source);
+				c.customertypetext = selectText("custype",c.customertype);
+				c.coursetext = selectText("cuscourse",c.course);
+				c.jobobjectivetext = selectText("jobobjective",c.jobobjective);
+				c.politicalstatustext = selectText("politicalstatus",c.politicalstatus);
+				c.nationalitytext = selectText("nationality",c.nationality);
+				c.maritalstatustext = selectText("maritalstatus",c.maritalstatus);
+				c.workplacetext = selectText("maritalstatus",c.workplace);
+				c.salarytext = selectText("salary",c.salary);
+				c.reseaontext = selectText("notcusreservation",o.reseaon);
+				c.reropttext = o.reropttext;
+				c.testing = o.testing;
+				c.intention = o.intention;
+				c.tips = o.tips;
+				c.callbackid = o.callbackid;
+				c.statusc = o.status;
+				c.memoc = o.memo;
+				c.resourceid = o.resourceid;
+				c.callbacktype = o.callbacktype;
+				c.tipdate = new Date(o.tipdate).format('yyyy-MM-dd');
+				c.calltime = new Date(o.calltime).format('yyyy-MM-dd');
+				json.push(c);
+            });
+			if(json.length == 0){
+				toastr.info("没有相关客户数据");
+			}else{
+				$("#customerCallbackData").bootstrapTable("load",json);
+			}
+			$("#selectCallbackDataModal").modal("hide");
+		},
+		error:function(){
+			toastr.error("获得数据失败");
+		}
+	});
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbApproveMainMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbApproveMain" >
+    <id column="APPROVEID" property="approveid" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="APPROVETYPE" property="approvetype" jdbcType="VARCHAR" />
+    <result column="CURRUSERID" property="curruserid" jdbcType="VARCHAR" />
+    <result column="NEXTUSERID" property="nextuserid" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APPROVEID, ORDERID, APPROVETYPE, CURRUSERID, NEXTUSERID, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_approve_main
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_approve_main
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbApproveMain" >
+    insert into tb_approve_main (APPROVEID, ORDERID, APPROVETYPE, 
+      CURRUSERID, NEXTUSERID, STATUS
+      )
+    values ('', #{orderid,jdbcType=VARCHAR}, #{approvetype,jdbcType=VARCHAR}, 
+      #{curruserid,jdbcType=VARCHAR}, #{nextuserid,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbApproveMain" >
+    insert into tb_approve_main
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="approveid != null" >
+        APPROVEID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="approvetype != null" >
+        APPROVETYPE,
+      </if>
+      <if test="curruserid != null" >
+        CURRUSERID,
+      </if>
+      <if test="nextuserid != null" >
+        NEXTUSERID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="approvetype != null" >
+        #{approvetype,jdbcType=VARCHAR},
+      </if>
+      <if test="curruserid != null" >
+        #{curruserid,jdbcType=VARCHAR},
+      </if>
+      <if test="nextuserid != null" >
+        #{nextuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbApproveMain" >
+    update tb_approve_main
+    <set >
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="approvetype != null" >
+        APPROVETYPE = #{approvetype,jdbcType=VARCHAR},
+      </if>
+      <if test="curruserid != null" >
+        CURRUSERID = #{curruserid,jdbcType=VARCHAR},
+      </if>
+      <if test="nextuserid != null" >
+        NEXTUSERID = #{nextuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbApproveMain" >
+    update tb_approve_main
+    set ORDERID = #{orderid,jdbcType=VARCHAR},
+      APPROVETYPE = #{approvetype,jdbcType=VARCHAR},
+      CURRUSERID = #{curruserid,jdbcType=VARCHAR},
+      NEXTUSERID = #{nextuserid,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 修改当前审批人 -->
+  <update id="updcurruserid" parameterType="com.icss.bean.TbApproveMain">
+  	 update tb_approve_main set CURRUSERID = NEXTUSERID, NEXTUSERID = #{nextuserid,jdbcType=VARCHAR} where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </update>
+</mapper>

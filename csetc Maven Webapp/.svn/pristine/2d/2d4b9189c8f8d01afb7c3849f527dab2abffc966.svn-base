@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbCustomerRemarkMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbCustomerRemark" >
+    <id column="REMARKID" property="remarkid" jdbcType="INTEGER" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="VARCHAR" />
+    <result column="SERVICETYPE" property="servicetype" jdbcType="VARCHAR" />
+    <result column="REMARKTYPE" property="remarktype" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
+    <result column="REMARKTIME" property="remarktime" jdbcType="TIMESTAMP" />
+    <result column="REMARKUSERID" property="remarkuserid" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REMARKID, CUSTOMERID, SERVICETYPE, REMARKTYPE, ATTACHMENT, REMARKTIME, REMARKUSERID, 
+    MEMO
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_customer_remark
+    where REMARKID = #{remarkid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_customer_remark
+    where REMARKID = #{remarkid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbCustomerRemark" >
+    insert into tb_customer_remark (REMARKID, CUSTOMERID, SERVICETYPE, 
+      REMARKTYPE, ATTACHMENT, REMARKTIME, 
+      REMARKUSERID, MEMO)
+    values (DEFAULT, #{customerid,jdbcType=VARCHAR}, #{servicetype,jdbcType=VARCHAR}, 
+      #{remarktype,jdbcType=VARCHAR}, #{attachment,jdbcType=VARCHAR}, now(), 
+      #{remarkuserid,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbCustomerRemark" >
+    insert into tb_customer_remark
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="remarkid != null" >
+        REMARKID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="servicetype != null" >
+        SERVICETYPE,
+      </if>
+      <if test="remarktype != null" >
+        REMARKTYPE,
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT,
+      </if>
+      <if test="remarktime != null" >
+        REMARKTIME,
+      </if>
+      <if test="remarkuserid != null" >
+        REMARKUSERID,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="remarkid != null" >
+        #{remarkid,jdbcType=INTEGER},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null" >
+        #{servicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="remarktype != null" >
+        #{remarktype,jdbcType=VARCHAR},
+      </if>
+      <if test="attachment != null" >
+        #{attachment,jdbcType=VARCHAR},
+      </if>
+      <if test="remarktime != null" >
+        #{remarktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarkuserid != null" >
+        #{remarkuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbCustomerRemark" >
+    update tb_customer_remark
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null" >
+        SERVICETYPE = #{servicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="remarktype != null" >
+        REMARKTYPE = #{remarktype,jdbcType=VARCHAR},
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT = #{attachment,jdbcType=VARCHAR},
+      </if>
+      <if test="remarktime != null" >
+        REMARKTIME = #{remarktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarkuserid != null" >
+        REMARKUSERID = #{remarkuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where REMARKID = #{remarkid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbCustomerRemark" >
+    update tb_customer_remark
+    set CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      SERVICETYPE = #{servicetype,jdbcType=VARCHAR},
+      REMARKTYPE = #{remarktype,jdbcType=VARCHAR},
+      ATTACHMENT = #{attachment,jdbcType=VARCHAR},
+      REMARKTIME = #{remarktime,jdbcType=TIMESTAMP},
+      REMARKUSERID = #{remarkuserid,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where REMARKID = #{remarkid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 根据客户编号查看客户批注信息 -->
+  <select id="qryCustomerRemrk" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT REMARKID, CUSTOMERID, SERVICETYPE, REMARKTYPE, ATTACHMENT, REMARKTIME, REMARKUSERID, 
+    MEMO, USERNAME FROM tb_customer_remark r
+	INNER JOIN tb_sys_user u ON u.USERID = r.REMARKUSERID
+	 WHERE CUSTOMERID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查看某人的某客户是否有批注信息   -->
+  <select id="checkRemark" parameterType="com.icss.bean.TbCustomerRemark" resultType="java.lang.Integer">
+  	select COUNT(*) from tb_customer_remark WHERE CUSTOMERID = #{customerid,jdbcType=VARCHAR} AND REMARKUSERID = #{remarkuserid,jdbcType=VARCHAR}
+  </select>
+</mapper>

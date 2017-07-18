@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 文件名: TbSysDeptMaper.xml 
+ * 描述:新建部门页面
+ * 所属:湖南中软计算机系统服务有限公司
+ * 开发人员：李敏 
+ * 创建时间：2017-03-21  -->
+<mapper namespace="com.icss.dao.TbSysDeptMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysDept" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DEPTID" property="deptid" jdbcType="VARCHAR" />
+    <result column="DEPTNAME" property="deptname" jdbcType="VARCHAR" />
+    <result column="DEPTLEVEL" property="deptlevel" jdbcType="VARCHAR" />
+    <result column="TOPDEPTID" property="topdeptid" jdbcType="VARCHAR" />
+    <result column="PERFORMANCE" property="performance" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="DEPTTYPE" property="depttype" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DEPTID, DEPTNAME, DEPTLEVEL, TOPDEPTID, PERFORMANCE, USERID, DEPTTYPE, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_dept
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_dept
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysDept" >
+    insert into tb_sys_dept (ID, DEPTID, DEPTNAME, 
+      DEPTLEVEL, TOPDEPTID, PERFORMANCE, 
+      USERID, DEPTTYPE, STATUS
+      )
+    values (#{id,jdbcType=VARCHAR}, #{deptid,jdbcType=VARCHAR}, #{deptname,jdbcType=VARCHAR}, 
+      #{deptlevel,jdbcType=VARCHAR}, #{topdeptid,jdbcType=VARCHAR}, #{performance,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=VARCHAR}, #{depttype,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysDept" >
+    insert into tb_sys_dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="deptid != null" >
+        DEPTID,
+      </if>
+      <if test="deptname != null" >
+        DEPTNAME,
+      </if>
+      <if test="deptlevel != null" >
+        DEPTLEVEL,
+      </if>
+      <if test="topdeptid != null" >
+        TOPDEPTID,
+      </if>
+      <if test="performance != null" >
+        PERFORMANCE,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="depttype != null" >
+        DEPTTYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),#{id,jdbcType=VARCHAR}),
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptname != null" >
+        #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptlevel != null" >
+        #{deptlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="topdeptid != null" >
+        #{topdeptid,jdbcType=VARCHAR},
+      </if>
+      <if test="performance != null" >
+        #{performance,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="depttype != null" >
+        #{depttype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysDept" >
+    update tb_sys_dept
+    <set >
+      <if test="deptid != null" >
+        DEPTID = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptname != null" >
+        DEPTNAME = #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptlevel != null" >
+        DEPTLEVEL = #{deptlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="topdeptid != null and topdeptid != ''" >
+        TOPDEPTID = #{topdeptid,jdbcType=VARCHAR},
+      </if>
+      <if test="performance != null" >
+        PERFORMANCE = #{performance,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="depttype != null" >
+        DEPTTYPE = #{depttype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysDept" >
+    update tb_sys_dept
+    set DEPTID = #{deptid,jdbcType=VARCHAR},
+      DEPTNAME = #{deptname,jdbcType=VARCHAR},
+      DEPTLEVEL = #{deptlevel,jdbcType=VARCHAR},
+      TOPDEPTID = #{topdeptid,jdbcType=VARCHAR},
+      PERFORMANCE = #{performance,jdbcType=VARCHAR},
+      USERID = #{userid,jdbcType=VARCHAR},
+      DEPTTYPE = #{depttype,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <!-- 查询获得当前表格最大的编号   -->
+   <select id="getMaxId" resultType="java.lang.String">
+  	SELECT MAX(ID) FROM tb_sys_dept WHERE ID like CONCAT ( DATE_FORMAT(CURDATE(),'%Y%m%d'),'%')
+  </select>
+  <!-- 查询当前部门的最大id-->
+  <select id="getMaxDeptId" resultType="java.lang.String" parameterType="java.lang.String">
+  SELECT MAX(DEPTID) FROM tb_sys_dept 
+  	<choose>
+  		<when test="_parameter != null and _parameter != ''">
+  			WHERE TOPDEPTID = #{_parameter,jdbcType=VARCHAR}
+  		</when>
+  		<otherwise>
+  			WHERE DEPTLEVEL = 0
+  		</otherwise>
+  	</choose>
+  </select>
+  <!-- 查询所有数据   -->
+  <select id="allDeptData" resultMap="BaseResultMap">
+   select 
+   <include refid="Base_Column_List" />
+   from tb_sys_dept where status='1' order by  deptid ,topdeptid  
+  </select>
+  
+  <!-- 根据上级id查找下级部门 -->
+  <select id="juniorDeptData" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+   <include refid="Base_Column_List" />
+   from tb_sys_dept
+   <if test="_parameter != '' and _parameter != null " >
+   	  where TOPDEPTID = #{_parameter,jdbcType=VARCHAR}  
+   </if>
+  </select>
+  
+  <!-- 根据部门名称查看是否存在 -->
+  <select id="judgeExistDept" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+   <include refid="Base_Column_List" />
+   from tb_sys_dept where DEPTNAME = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 点击部门根据部门编号查看该部门所有信息 -->
+  <select id="getDeptDataById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT d.ID, d.DEPTID, deptname DEPTNAME,deptlevel DEPTLEVEL,b1.level2name PERFORMANCE, u.username USERID, b2.level2name DEPTTYPE,d.`STATUS`,d.TOPDEPTID FROM tb_sys_dept d 
+	INNER JOIN tb_sys_user u ON d.userid = u.userid
+	INNER JOIN (SELECT * FROM tb_sys_basecode WHERE level1id = 13 ) b1 ON b1.level2id = d.performance
+	INNER JOIN (SELECT * FROM tb_sys_basecode WHERE level1id = 12 ) b2 ON b2.level2id = d.depttype
+	where d.deptid = #{_parameter,jdbcType=VARCHAR}  
+  </select>
+  
+  <!-- 跟新部门状态 --> 
+  <update id="updDeptStatus" parameterType="com.icss.bean.TbSysDept">
+  	update tb_sys_dept
+    set 
+      STATUS = #{status,jdbcType=VARCHAR}
+    where DEPTID = #{deptid,jdbcType=VARCHAR} 
+  </update>
+  
+  <!-- cq -->
+  <select id="datafordeptid"  resultMap="BaseResultMap">
+  	SELECT * FROM  tb_sys_dept  where  DEPTID = #{deptid,jdbcType=VARCHAR}
+  </select>
+  <!-- cq -->
+  <select id="datafortopdeptid"  resultMap="BaseResultMap">
+ 	 SELECT * FROM  tb_sys_dept  where  TOPDEPTID = #{topdeptid,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysUserroleMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysUserrole" >
+    <id column="USEROLEID" property="useroleid" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    USEROLEID, USERID, ROLEID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_userrole
+    where USEROLEID = #{useroleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_userrole
+    where USEROLEID = #{useroleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysUserrole" >
+    insert into tb_sys_userrole (USEROLEID, USERID, ROLEID
+      )
+    values ('', #{userid,jdbcType=VARCHAR}, #{roleid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysUserrole" >
+    insert into tb_sys_userrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="useroleid != null" >
+        USEROLEID,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="roleid != null" >
+        ROLEID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="useroleid != null" >
+        #{useroleid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysUserrole" >
+    update tb_sys_userrole
+    <set >
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null" >
+        ROLEID = #{roleid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USEROLEID = #{useroleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysUserrole" >
+    update tb_sys_userrole
+    set USERID = #{userid,jdbcType=VARCHAR},
+      ROLEID = #{roleid,jdbcType=VARCHAR}
+    where USEROLEID = #{useroleid,jdbcType=VARCHAR}
+  </update>
+  
+   <!-- 获得最大的id -->
+  <select id="getMaxId" resultType="java.lang.String">
+  	SELECT MAX(USEROLEID) FROM tb_sys_userrole WHERE USEROLEID like CONCAT ( DATE_FORMAT(CURDATE(),'%Y%m%d'),'%')
+  </select>
+  <!-- 删除用户和角色的关系 -->
+  <delete id="deleteUserRole" parameterType="java.lang.String">
+  	 delete from tb_sys_userrole
+    where USERID = #{_parameter,jdbcType=VARCHAR} 
+  </delete>
+</mapper>

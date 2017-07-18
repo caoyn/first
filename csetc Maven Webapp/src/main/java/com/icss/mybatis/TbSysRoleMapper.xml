@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysRole" >
+    <id column="ROLEID" property="roleid" jdbcType="VARCHAR" />
+    <result column="ROLENAME" property="rolename" jdbcType="VARCHAR" />
+    <result column="ROLEDESC" property="roledesc" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLEID, ROLENAME, ROLEDESC, CREATETIME, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_role
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_role
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysRole" keyProperty="roleid" useGeneratedKeys="true">
+    insert into tb_sys_role (ROLEID, ROLENAME, ROLEDESC, 
+      CREATETIME, STATUS)
+    values ('', #{rolename,jdbcType=VARCHAR}, #{roledesc,jdbcType=VARCHAR}, 
+      now(), #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysRole" >
+    insert into tb_sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        ROLEID,
+      </if>
+      <if test="rolename != null" >
+        ROLENAME,
+      </if>
+      <if test="roledesc != null" >
+        ROLEDESC,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="roledesc != null" >
+        #{roledesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysRole" >
+    update tb_sys_role
+    <set >
+      <if test="rolename != null" >
+        ROLENAME = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="roledesc != null" >
+        ROLEDESC = #{roledesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysRole" >
+    update tb_sys_role
+    set ROLENAME = #{rolename,jdbcType=VARCHAR},
+      ROLEDESC = #{roledesc,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 获得所有角色 -->
+  <select id="getAllRoleData" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_role 
+  </select>
+  
+  <!-- 获得所有启用的角色 -->
+	<select id="getRoleBystatus" resultMap="BaseResultMap">
+		SELECT ROLEID, ROLENAME  FROM TB_SYS_ROLE  WHERE STATUS = 1
+	</select>
+</mapper>

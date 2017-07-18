@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbOrderRefundMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbOrderRefund" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="VARCHAR" />
+    <result column="CUSTOMERNAME" property="customername" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="PRICE" property="price" jdbcType="REAL" />
+    <result column="AMOUNT" property="amount" jdbcType="REAL" />
+    <result column="AMOUNTCOUNT" property="amountcount" jdbcType="REAL" />
+    <result column="REFUND" property="refund" jdbcType="REAL" />
+    <result column="REFUNDTIME" property="refundtime" jdbcType="DATE" />
+    <result column="REFUNDTYPE" property="refundtype" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERIDTEXT" property="useridtext" jdbcType="VARCHAR" />
+    <result column="DEPTID" property="deptid" jdbcType="VARCHAR" />
+    <result column="CURRUSERID" property="curruserid" jdbcType="VARCHAR" />
+    <result column="CURRUSERTEXT" property="curruseridtext" jdbcType="VARCHAR" />
+    <result column="NEXTUSERID" property="nextuserid" jdbcType="VARCHAR" />
+    <result column="NEXTUSERTEXT" property="nextuseridtext" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="APPROVEID" property="approveid" jdbcType="VARCHAR" />
+    <result column="MAPPROVEID" property="mapproveid" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="ASTATUS" property="astatus" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ORDERID, PRODID, PRODNAME, REFUND, REFUNDTIME, REFUNDTYPE, MEMO, USERID, DEPTID, 
+    STATUS, CREATETIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_refund
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order_refund
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbOrderRefund" >
+    insert into tb_order_refund (ID, ORDERID, PRODID, 
+      PRODNAME, REFUND, REFUNDTIME, 
+      REFUNDTYPE, MEMO, USERID, 
+      DEPTID, STATUS, CREATETIME
+      )
+    values ('', #{orderid,jdbcType=VARCHAR}, #{prodid,jdbcType=VARCHAR}, 
+      #{prodname,jdbcType=VARCHAR}, #{refund,jdbcType=REAL}, #{refundtime,jdbcType=DATE}, 
+      #{refundtype,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{deptid,jdbcType=VARCHAR}, '0', now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbOrderRefund" >
+    insert into tb_order_refund
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="prodid != null" >
+        PRODID,
+      </if>
+      <if test="prodname != null" >
+        PRODNAME,
+      </if>
+      <if test="refund != null" >
+        REFUND,
+      </if>
+      <if test="refundtime != null" >
+        REFUNDTIME,
+      </if>
+      <if test="refundtype != null" >
+        REFUNDTYPE,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="deptid != null" >
+        DEPTID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="refund != null" >
+        #{refund,jdbcType=REAL},
+      </if>
+      <if test="refundtime != null" >
+        #{refundtime,jdbcType=DATE},
+      </if>
+      <if test="refundtype != null" >
+        #{refundtype,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbOrderRefund" >
+    update tb_order_refund
+    <set >
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="refund != null" >
+        REFUND = #{refund,jdbcType=REAL},
+      </if>
+      <if test="refundtime != null" >
+        REFUNDTIME = #{refundtime,jdbcType=DATE},
+      </if>
+      <if test="refundtype != null" >
+        REFUNDTYPE = #{refundtype,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        DEPTID = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbOrderRefund" >
+    update tb_order_refund
+    set ORDERID = #{orderid,jdbcType=VARCHAR},
+      PRODID = #{prodid,jdbcType=VARCHAR},
+      PRODNAME = #{prodname,jdbcType=VARCHAR},
+      REFUND = #{refund,jdbcType=REAL},
+      REFUNDTIME = #{refundtime,jdbcType=DATE},
+      REFUNDTYPE = #{refundtype,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      USERID = #{userid,jdbcType=VARCHAR},
+      DEPTID = #{deptid,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 管理员查看所有的退费订单   -->
+  
+  
+  <!-- 普通员工查看自己的退费订单或者待自己处理的订单   -->
+  <select id="getRefundData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	  SELECT  o.ORDERID, o.CUSTOMERID, c.CUSTOMERNAME, r.CREATETIME, o.PRODID, o.PRODNAME, o.PRICE,
+	o.AMOUNT, o.AMOUNTCOUNT, r.id, r.REFUND, r.MEMO, r.USERID, u3.USERNAME USERIDTEXT, o.STATUS, a.CURRUSERID, 
+	u.USERNAME CURRUSERTEXT, a.NEXTUSERID, u2.USERNAME NEXTUSERTEXT,a.approveid MAPPROVEID, o.approveid APPROVEID,
+	a.STATUS ASTATUS
+	FROM (SELECT * FROM tb_order_refund WHERE ID in (SELECT max(id) FROM tb_order_refund GROUP BY ORDERID )) r 
+	INNER JOIN tb_order_orders o ON r.orderid = o.orderid	
+	INNER JOIN tb_customer c ON c.customerid = o.customerid
+	INNER JOIN (SELECT * FROM tb_approve_main WHERE approveid in (SELECT max(approveid) FROM tb_approve_main GROUP BY ORDERID )) a 
+	ON a.orderid = r.orderid
+	INNER JOIN tb_sys_user u ON u.userid = a.curruserid
+	INNER JOIN tb_sys_user u3 ON u3.userid = r.userid
+	LEFT JOIN tb_sys_user u2 ON u2.userid = a.nextuserid
+	WHERE r.userid = #{_parameter,jdbcType=VARCHAR} OR curruserid = #{_parameter,jdbcType=VARCHAR}  AND a.status = '0' 
+  </select>
+  <!-- 
+	<select id="getRefundData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT o.ORDERID, o.CUSTOMERID, c.CUSTOMERNAME, r.CREATETIME, o.PRODID, o.PRODNAME, o.PRICE,
+	o.AMOUNT, o.AMOUNTCOUNT, r.id, r.REFUND, r.MEMO, r.USERID, u3.USERNAME USERIDTEXT, r.STATUS, a.CURRUSERID, 
+	u.USERNAME CURRUSERTEXT, a.NEXTUSERID, u2.USERNAME NEXTUSERTEXT,a.approveid MAPPROVEID, o.approveid APPROVEID,
+	a.STATUS ASTATUS
+	FROM tb_order_refund r 
+	INNER JOIN tb_order_orders o ON r.orderid = o.orderid
+	INNER JOIN tb_approve_main a ON a.orderid = r.orderid
+	INNER JOIN tb_customer c ON c.customerid = o.customerid
+	INNER JOIN tb_sys_user u ON u.userid = a.curruserid
+	INNER JOIN tb_sys_user u3 ON u3.userid = r.userid
+	LEFT JOIN tb_sys_user u2 ON u2.userid = a.nextuserid
+	WHERE (r.userid = #{_parameter,jdbcType=VARCHAR} OR curruserid = #{_parameter,jdbcType=VARCHAR})
+	 AND a.status = '0' 
+  </select> -->
+  
+  <!-- 财务查看所有待退费的订单 -->
+  <select id="allRefundData" resultMap="BaseResultMap">
+  	SELECT o.ORDERID, o.CUSTOMERID, c.CUSTOMERNAME, o.CREATETIME, o.PRODID, o.PRODNAME, o.PRICE,
+	o.AMOUNT, o.AMOUNTCOUNT, r.id, r.REFUND, r.MEMO, r.USERID, u3.USERNAME USERIDTEXT, o.STATUS, a.CURRUSERID, 
+	u.USERNAME CURRUSERTEXT, a.NEXTUSERID, u2.USERNAME NEXTUSERTEXT,a.approveid MAPPROVEID, o.approveid APPROVEID,
+	a.STATUS ASTATUS
+	FROM tb_order_refund r 
+	INNER JOIN tb_order_orders o ON r.orderid = o.orderid
+	INNER JOIN tb_approve_main a ON a.orderid = r.orderid
+	INNER JOIN tb_customer c ON c.customerid = o.customerid
+	INNER JOIN tb_sys_user u ON u.userid = a.curruserid
+	INNER JOIN tb_sys_user u3 ON u3.userid = r.userid
+	LEFT JOIN tb_sys_user u2 ON u2.userid = a.nextuserid
+	WHERE o.status IN ('1021','1031')  AND a.status = '1' and r.status = '0'
+  </select>
+  
+  <!-- 更改订单状态  -->
+  <update id="updOrderStatus" parameterType="com.icss.bean.TbOrderRefund">
+  update tb_order_refund
+    set STATUS = #{status,jdbcType=VARCHAR}
+    where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

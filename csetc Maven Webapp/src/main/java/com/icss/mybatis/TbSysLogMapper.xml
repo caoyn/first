@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="REMOTEIP" property="remoteip" jdbcType="VARCHAR" />
+    <result column="PERMID" property="permid" jdbcType="VARCHAR" />
+    <result column="PERMISSIONNAME" property="permissionname" jdbcType="VARCHAR" />
+    <result column="REQUESTURL" property="requesturl" jdbcType="VARCHAR" />
+    <result column="REQUESTOPER" property="requestoper" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USERID, CREATETIME, REMOTEIP, PERMID, REQUESTURL, REQUESTOPER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysLog" >
+    insert into tb_sys_log (ID, USERID, CREATETIME, 
+      REMOTEIP, PERMID, REQUESTURL, 
+      REQUESTOPER)
+    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{remoteip,jdbcType=VARCHAR}, #{permid,jdbcType=VARCHAR}, #{requesturl,jdbcType=VARCHAR}, 
+      #{requestoper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysLog" >
+    insert into tb_sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="remoteip != null" >
+        REMOTEIP,
+      </if>
+      <if test="permid != null" >
+        PERMID,
+      </if>
+      <if test="requesturl != null" >
+        REQUESTURL,
+      </if>
+      <if test="requestoper != null" >
+        REQUESTOPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remoteip != null" >
+        #{remoteip,jdbcType=VARCHAR},
+      </if>
+      <if test="permid != null" >
+        #{permid,jdbcType=VARCHAR},
+      </if>
+      <if test="requesturl != null" >
+        #{requesturl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestoper != null" >
+        #{requestoper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysLog" >
+    update tb_sys_log
+    <set >
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remoteip != null" >
+        REMOTEIP = #{remoteip,jdbcType=VARCHAR},
+      </if>
+      <if test="permid != null" >
+        PERMID = #{permid,jdbcType=VARCHAR},
+      </if>
+      <if test="requesturl != null" >
+        REQUESTURL = #{requesturl,jdbcType=VARCHAR},
+      </if>
+      <if test="requestoper != null" >
+        REQUESTOPER = #{requestoper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysLog" >
+    update tb_sys_log
+    set USERID = #{userid,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      REMOTEIP = #{remoteip,jdbcType=VARCHAR},
+      PERMID = #{permid,jdbcType=VARCHAR},
+      REQUESTURL = #{requesturl,jdbcType=VARCHAR},
+      REQUESTOPER = #{requestoper,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- cq -->
+  <select id="selectAll" resultMap="BaseResultMap">
+ 	 select 
+    <include refid="Base_Column_List" />
+    from tb_sys_log
+  </select>
+  
+  <!-- 查看所有登录日志信息    -->
+  <!-- <select id="getLogData" resultMap="BaseResultMap">
+  	SELECT l.ID, l.USERID, l.CREATETIME, REMOTEIP, PERMID, REQUESTURL, REQUESTOPER,USERNAME,PERMISSIONNAME 
+  	FROM tb_sys_log l INNER JOIN tb_sys_user u on u.userid = l.userid 
+  	INNER JOIN tb_sys_permission p ON p.permissionid = permid
+  	where to_days(l.CREATETIME) = to_days(now()) 
+  </select> -->
+  
+  <!-- 查看所有登录日志信息数量    -->
+  <select id="getLogDataCount" resultType="java.lang.Integer">
+  	SELECT count(*) 
+  	FROM tb_sys_log l INNER JOIN tb_sys_user u on u.userid = l.userid 
+  	INNER JOIN tb_sys_permission p ON p.permissionid = permid
+  </select>
+  <!-- 查看所有登录日志信息    -->
+  <select id="getLogData" resultMap="BaseResultMap" parameterType="com.icss.bean.TbSysLog">
+  	SELECT l.ID, l.USERID, l.CREATETIME, REMOTEIP, PERMID, REQUESTURL, REQUESTOPER,USERNAME,PERMISSIONNAME 
+  	FROM tb_sys_log l INNER JOIN tb_sys_user u on u.userid = l.userid 
+  	INNER JOIN tb_sys_permission p ON p.permissionid = permid
+  	<if test="id != null">
+  		<where>
+  			<if test="username != null"> USERNAME = #{username,jdbcType=VARCHAR}</if>
+  		</where>
+  		order by l.id desc limit ${id},${permid}
+  	</if>
+  </select>
+</mapper>

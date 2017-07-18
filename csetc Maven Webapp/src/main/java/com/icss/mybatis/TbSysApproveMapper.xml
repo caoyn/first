@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysApproveMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysApprove" >
+    <id column="APPROVEID" property="approveid" jdbcType="VARCHAR" />
+    <result column="FLOWNAME" property="flowname" jdbcType="VARCHAR" />
+    <result column="FLOWTYPE" property="flowtype" jdbcType="VARCHAR" />
+    <result column="FLOWVERSION" property="flowversion" jdbcType="INTEGER" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APPROVEID, FLOWNAME, FLOWTYPE, FLOWVERSION, USERID, CREATETIME, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_approve
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_approve
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysApprove">
+    insert into tb_sys_approve (APPROVEID, FLOWNAME, FLOWTYPE, 
+      FLOWVERSION, USERID, CREATETIME, 
+      STATUS)
+    values ('', #{flowname,jdbcType=VARCHAR}, #{flowtype,jdbcType=VARCHAR}, 
+      #{flowversion,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, now(), 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysApprove">
+    insert into tb_sys_approve
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="approveid != null" >
+        APPROVEID,
+      </if>
+      <if test="flowname != null" >
+        FLOWNAME,
+      </if>
+      <if test="flowtype != null" >
+        FLOWTYPE,
+      </if>
+      <if test="flowversion != null" >
+        FLOWVERSION,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowname != null" >
+        #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="flowtype != null" >
+        #{flowtype,jdbcType=VARCHAR},
+      </if>
+      <if test="flowversion != null" >
+        #{flowversion,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysApprove" >
+    update tb_sys_approve
+    <set >
+      <if test="flowname != null" >
+        FLOWNAME = #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="flowtype != null" >
+        FLOWTYPE = #{flowtype,jdbcType=VARCHAR},
+      </if>
+      <if test="flowversion != null" >
+        FLOWVERSION = #{flowversion,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysApprove" >
+    update tb_sys_approve
+    set FLOWNAME = #{flowname,jdbcType=VARCHAR},
+      FLOWTYPE = #{flowtype,jdbcType=VARCHAR},
+      FLOWVERSION = #{flowversion,jdbcType=INTEGER},
+      USERID = #{userid,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where APPROVEID = #{approveid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查看所有审批主表信息  -->
+  <!-- 这里有将用户编号和类型装成对应的中文  -->
+  <select id="getAllApproveData" resultMap="BaseResultMap">
+	SELECT  APPROVEID, FLOWNAME, b.level2name FLOWTYPE, FLOWVERSION, USERNAME USERID, a.CREATETIME, a.STATUS from tb_sys_approve a
+	INNER JOIN (SELECT * FROM tb_sys_basecode WHERE LEVEL1id = 15 and status = 1) b
+	ON a.flowtype = b.level2id
+	INNER JOIN tb_sys_user u ON u.userid = a.userid
+  </select>
+  
+  <!-- 查看审批配置的数据  -->
+  <select id="getApproveSelectByType" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT APPROVEID,FLOWNAME FROM tb_sys_approve WHERE STATUS = 1 AND FLOWTYPE = #{_parameter,jdbcType=VARCHAR}  	
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbCustomer" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <id column="CUSTOMERID" property="customerid" jdbcType="VARCHAR" />
+    <result column="CUSTOMERNAME" property="customername" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="SCHOOL" property="school" jdbcType="VARCHAR" />
+    <result column="MAJOR" property="major" jdbcType="VARCHAR" />
+    <result column="MAJORTEXT" property="majortext" jdbcType="VARCHAR" />
+    <result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+    <result column="EDUCATIONTEXT" property="educationtext" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+    <result column="OPERATORTEXT" property="operatortext" jdbcType="VARCHAR" />
+    <result column="COLLECTOR" property="collector" jdbcType="VARCHAR" />
+    <result column="COLLECTORTEXT" property="collectortext" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="SOURCE" property="source" jdbcType="VARCHAR" />
+    <result column="SOURCETEXT" property="sourcetext" jdbcType="VARCHAR" />
+    <result column="CUSTOMERTYPE" property="customertype" jdbcType="VARCHAR" />
+    <result column="CUSTOMERTYPETEXT" property="customertypetext" jdbcType="VARCHAR" />
+    <result column="COURSE" property="course" jdbcType="VARCHAR" />
+    <result column="COURSETEXT" property="coursetext" jdbcType="VARCHAR" />
+    <result column="JOBOBJECTIVE" property="jobobjective" jdbcType="VARCHAR" />
+    <result column="JOBOBJECTIVETEXT" property="jobobjectivetext" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+    <result column="PLACEOFBIRTH" property="placeofbirth" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="POLITICALSTATUS" property="politicalstatus" jdbcType="VARCHAR" />
+    <result column="POLITICALSTATUSTEXT" property="politicalstatustext" jdbcType="VARCHAR" />
+    <result column="NATIONALITY" property="nationality" jdbcType="VARCHAR" />
+    <result column="NAYIONALITYTEXT" property="nayionalitytext" jdbcType="VARCHAR" />
+    <result column="MARITALSTATUS" property="maritalstatus" jdbcType="VARCHAR" />
+    <result column="WORKSERVICE" property="workservice" jdbcType="VARCHAR" />
+    <result column="WORKSERVICETEXT" property="workservicetext" jdbcType="VARCHAR" />
+    <result column="WORKEXP" property="workexp" jdbcType="VARCHAR" />
+    <result column="WORKPLACE" property="workplace" jdbcType="VARCHAR" />
+    <result column="WORKPLACETEXT" property="workplacetext" jdbcType="VARCHAR" />
+    <result column="SALARY" property="salary" jdbcType="VARCHAR" />
+    <result column="SALARYTEXT" property="salarytext" jdbcType="VARCHAR" />
+    <result column="ECP" property="ecp" jdbcType="VARCHAR" />
+    <result column="BANK" property="bank" jdbcType="VARCHAR" />
+    <result column="BANKNO" property="bankno" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="ASSIGNTYPE" property="assigntype" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATIONSTANDARD" property="classificationstandard" jdbcType="VARCHAR" />
+    <result column="RESUMEURL" property="resumeurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, MEMO, STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD,RESUMEURL
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_customer
+    where 
+      and CUSTOMERID = #{customerid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_customer
+    where 
+      and CUSTOMERID = #{customerid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbCustomer" >
+    insert into tb_customer (ID, CUSTOMERID, CUSTOMERNAME, 
+      SEX, TELEPHONE, EMAIL, 
+      SCHOOL, MAJOR, EDUCATION, 
+      OPERATOR, COLLECTOR, CREATETIME, 
+      SOURCE, CUSTOMERTYPE, COURSE, 
+      JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+      ADDRESS, POLITICALSTATUS, NATIONALITY, 
+      MARITALSTATUS, WORKSERVICE, WORKEXP, 
+      WORKPLACE, SALARY, ECP, 
+      BANK, BANKNO, MEMO, 
+      STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD
+      )
+    values (#{id,jdbcType=INTEGER}, '', #{customername,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{school,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR}, #{collector,jdbcType=VARCHAR}, now(), 
+      #{source,jdbcType=VARCHAR}, #{customertype,jdbcType=VARCHAR}, #{course,jdbcType=VARCHAR}, 
+      #{jobobjective,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{placeofbirth,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{politicalstatus,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+      #{maritalstatus,jdbcType=VARCHAR}, #{workservice,jdbcType=VARCHAR}, #{workexp,jdbcType=VARCHAR}, 
+      #{workplace,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, #{ecp,jdbcType=VARCHAR}, 
+      #{bank,jdbcType=VARCHAR}, #{bankno,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, 0, #{classificationstandard,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbCustomer" >
+    insert into tb_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="customername != null" >
+         CUSTOMERID,CUSTOMERNAME,CREATETIME,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="telephone != null" >
+        TELEPHONE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="school != null" >
+        SCHOOL,
+      </if>
+      <if test="major != null" >
+        MAJOR,
+      </if>
+      <if test="education != null" >
+        EDUCATION,
+      </if>
+      <if test="operator != null" >
+        OPERATOR,
+      </if>
+      <if test="collector != null" >
+        COLLECTOR,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="source != null" >
+        SOURCE,
+      </if>
+      <if test="customertype != null" >
+        CUSTOMERTYPE,
+      </if>
+      <if test="course != null" >
+        COURSE,
+      </if>
+      <if test="jobobjective != null" >
+        JOBOBJECTIVE,
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY,
+      </if>
+      <if test="placeofbirth != null" >
+        PLACEOFBIRTH,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="politicalstatus != null" >
+        POLITICALSTATUS,
+      </if>
+      <if test="nationality != null" >
+        NATIONALITY,
+      </if>
+      <if test="maritalstatus != null" >
+        MARITALSTATUS,
+      </if>
+      <if test="workservice != null" >
+        WORKSERVICE,
+      </if>
+      <if test="workexp != null" >
+        WORKEXP,
+      </if>
+      <if test="workplace != null" >
+        WORKPLACE,
+      </if>
+      <if test="salary != null" >
+        SALARY,
+      </if>
+      <if test="ecp != null" >
+        ECP,
+      </if>
+      <if test="bank != null" >
+        BANK,
+      </if>
+      <if test="bankno != null" >
+        BANKNO,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="status != null" >
+        STATUS,ASSIGNTYPE,
+      </if>
+      <if test="classificationstandard != null" >
+        CLASSIFICATIONSTANDARD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+     
+      <if test="customername != null" >
+        '',#{customername,jdbcType=VARCHAR},now(),
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="collector != null" >
+        #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="customertype != null" >
+        #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="course != null" >
+        #{course,jdbcType=VARCHAR},
+      </if>
+      <if test="jobobjective != null" >
+        #{jobobjective,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="placeofbirth != null" >
+        #{placeofbirth,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalstatus != null" >
+        #{politicalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null" >
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalstatus != null" >
+        #{maritalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="workservice != null" >
+        #{workservice,jdbcType=VARCHAR},
+      </if>
+      <if test="workexp != null" >
+        #{workexp,jdbcType=VARCHAR},
+      </if>
+      <if test="workplace != null" >
+        #{workplace,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="ecp != null" >
+        #{ecp,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankno != null" >
+        #{bankno,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},0,
+      </if>
+      <if test="classificationstandard != null" >
+        #{classificationstandard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbCustomer" >
+    update tb_customer
+    <set >
+      <if test="customername != null" >
+        CUSTOMERNAME = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        SCHOOL = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        MAJOR = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        EDUCATION = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="collector != null" >
+        COLLECTOR = #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        SOURCE = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="customertype != null" >
+        CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="course != null" >
+        COURSE = #{course,jdbcType=VARCHAR},
+      </if>
+      <if test="jobobjective != null" >
+        JOBOBJECTIVE = #{jobobjective,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="placeofbirth != null" >
+        PLACEOFBIRTH = #{placeofbirth,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalstatus != null" >
+        POLITICALSTATUS = #{politicalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null" >
+        NATIONALITY = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalstatus != null" >
+        MARITALSTATUS = #{maritalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="workservice != null" >
+        WORKSERVICE = #{workservice,jdbcType=VARCHAR},
+      </if>
+      <if test="workexp != null" >
+        WORKEXP = #{workexp,jdbcType=VARCHAR},
+      </if>
+      <if test="workplace != null" >
+        WORKPLACE = #{workplace,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        SALARY = #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="ecp != null" >
+        ECP = #{ecp,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        BANK = #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankno != null" >
+        BANKNO = #{bankno,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="assigntype != null" >
+        ASSIGNTYPE = #{assigntype,jdbcType=VARCHAR},
+      </if>
+      <if test="classificationstandard != null" >
+        CLASSIFICATIONSTANDARD = #{classificationstandard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+      and CUSTOMERID = #{customerid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbCustomer" >
+    update tb_customer
+    set CUSTOMERNAME = #{customername,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      SCHOOL = #{school,jdbcType=VARCHAR},
+      MAJOR = #{major,jdbcType=VARCHAR},
+      EDUCATION = #{education,jdbcType=VARCHAR},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      COLLECTOR = #{collector,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      SOURCE = #{source,jdbcType=VARCHAR},
+      CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR},
+      COURSE = #{course,jdbcType=VARCHAR},
+      JOBOBJECTIVE = #{jobobjective,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=DATE},
+      PLACEOFBIRTH = #{placeofbirth,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      POLITICALSTATUS = #{politicalstatus,jdbcType=VARCHAR},
+      NATIONALITY = #{nationality,jdbcType=VARCHAR},
+      MARITALSTATUS = #{maritalstatus,jdbcType=VARCHAR},
+      WORKSERVICE = #{workservice,jdbcType=VARCHAR},
+      WORKEXP = #{workexp,jdbcType=VARCHAR},
+      WORKPLACE = #{workplace,jdbcType=VARCHAR},
+      SALARY = #{salary,jdbcType=VARCHAR},
+      ECP = #{ecp,jdbcType=VARCHAR},
+      BANK = #{bank,jdbcType=VARCHAR},
+      BANKNO = #{bankno,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      ASSIGNTYPE = #{assigntype,jdbcType=VARCHAR},
+      CLASSIFICATIONSTANDARD = #{classificationstandard,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+      and CUSTOMERID = #{customerid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 检查该客户电话是否存在   -->
+  <select id="checkPresenceExists" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT <include refid="Base_Column_List" /> FROM tb_customer WHERE TELEPHONE = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+ <!-- 查看当前的要导入的数据中是否有重复值 -->
+ <select id="repeatdata" parameterType="java.util.List" resultType="java.lang.String">
+ 	SELECT TELEPHONE FROM tb_customer WHERE TELEPHONE in
+	<foreach collection="list" item="telephone"  open="(" separator="," close=")">  
+        #{telephone,jdbcType=VARCHAR}
+   </foreach>
+ </select>
+ 
+ <!-- 最高管理员查看客户的信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 -->
+ <select id="getAllCustomerinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+ <bind name="id" value="_parameter"/>
+ 	SELECT <include refid="Base_Column_List" /> ,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+ 	where  ( ASSIGNTYPE = 0 	or ASSIGNTYPE= 2)
+ 	<if test='id == "1"'><!-- 当日的数据 -->
+ 		AND to_days(CREATETIME) = to_days(now())
+ 	</if>
+ 	<if test='id == "2"'><!-- 昨日的数据  -->
+ 		AND to_days(now()) - to_days(CREATETIME) &lt;= 1
+ 	</if>
+ 	<if test='id == "3"'><!-- 本周的数据 -->
+ 		AND YEARWEEK( DATE_FORMAT(CREATETIME,'%Y-%m-%d') ) = YEARWEEK(NOW())
+ 	</if>
+ 	<if test='id == "4"'><!-- 本月的数据 -->
+ 		AND DATE_FORMAT(CREATETIME,'%Y%m')  = DATE_FORMAT(CURDATE(),'%Y%m')
+ 	</if>
+ 	<if test='id == "5"'><!-- 上月的数据 -->
+ 		AND PERIOD_DIFF(DATE_FORMAT(now(),'%Y%m'),DATE_FORMAT(createtime,'%Y%m'))=1
+ 	</if>
+ 	<if test='id == "6"'><!-- 今年的数据 -->
+ 		AND year(CREATETIME)  = year(now())
+ 	</if>
+ 	order by CREATETIME desc
+ </select> 
+
+ <!-- 二级管理员查看客户的信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 -->
+ <select id="getSecondCustomerinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	<bind name="deptid" value='"(" + collector + ")"'/>
+	SELECT <include refid="Base_Column_List" /> ,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+	WHERE collector in (
+		SELECT userid FROM tb_sys_user WHERE deptid in  ${deptid} 
+		) AND ( ASSIGNTYPE = 0 or ASSIGNTYPE = 2)
+ 	<if test='customerid == "1"'><!-- 当日的数据 -->
+ 		and to_days(CREATETIME) = to_days(now())
+ 	</if>
+ 	<if test='customerid == "2"'><!-- 昨日的数据  -->
+ 		and to_days(now()) - to_days(CREATETIME) &lt;= 1
+ 	</if>
+ 	<if test='customerid == "3"'><!-- 本周的数据 -->
+ 		and YEARWEEK( DATE_FORMAT(CREATETIME,'%Y-%m-%d') ) = YEARWEEK(NOW())
+ 	</if>
+ 	<if test='customerid == "4"'><!-- 本月的数据 -->
+ 		and DATE_FORMAT(CREATETIME,'%Y%m')  = DATE_FORMAT(CURDATE(),'%Y%m')
+ 	</if>
+ 	<if test='customerid == "5"'><!-- 上月的数据 -->
+ 		and PERIOD_DIFF(DATE_FORMAT(now(),'%Y%m'),DATE_FORMAT(createtime,'%Y%m'))=1
+ 	</if>
+ 	<if test='customerid == "6"'><!-- 今年的数据 -->
+ 		and year(CREATETIME)  = year(now())
+ 	</if>
+ 	order by CREATETIME desc
+ </select> 
+ 
+ 
+ <!-- 部门主管查看客户的信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 ,customerid只是用来传参数判断需要查询的时间-->
+ <select id="getDeptCustomerinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT <include refid="Base_Column_List" /> ,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+ 	WHERE collector in (SELECT userid FROM tb_sys_user WHERE deptid LIKE (SELECT CONCAT(deptid,'%')deptid FROM tb_sys_user WHERE userid = #{collector,jdbcType=VARCHAR})) 
+ 	AND (ASSIGNTYPE = 0 or ASSIGNTYPE = 2)	
+ 	<if test='customerid == "1"'><!-- 当日的数据 -->
+ 		AND to_days(CREATETIME) = to_days(now())
+ 	</if>
+ 	<if test='customerid == "2"'><!-- 昨日的数据  -->
+ 		AND to_days(now()) - to_days(CREATETIME) &lt;= 1
+ 	</if>
+ 	<if test='customerid == "3"'><!-- 本周的数据 -->
+ 		AND YEARWEEK( DATE_FORMAT(CREATETIME,'%Y-%m-%d') ) = YEARWEEK(NOW())
+ 	</if>
+ 	<if test='customerid == "4"'><!-- 本月的数据 -->
+ 		AND DATE_FORMAT(CREATETIME,'%Y%m')  = DATE_FORMAT(CURDATE(),'%Y%m')
+ 	</if>
+ 	<if test='customerid == "5"'><!-- 上月的数据 -->
+ 		AND PERIOD_DIFF(DATE_FORMAT(now(),'%Y%m'),DATE_FORMAT(createtime,'%Y%m'))=1
+ 	</if>
+ 	<if test='customerid == "6"'><!-- 今年的数据 -->
+ 		AND year(CREATETIME)  = year(now())
+ 	</if>
+ 	order by CREATETIME desc
+ </select> 
+ 
+ 
+ <!-- 普通客户查看自己的客户信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 ,customerid只是用来传参数判断需要查询的时间-->
+ <select id="getCustomerinfo" parameterType="com.icss.bean.TbCustomer" resultMap="BaseResultMap">
+ 	SELECT <include refid="Base_Column_List" /> ,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+ 	 WHERE collector = #{collector,jdbcType=VARCHAR}
+ 	AND (ASSIGNTYPE = 0 	or ASSIGNTYPE =2 )
+ 	<if test='customerid == "1"'><!-- 当日的数据 -->
+ 		AND to_days(CREATETIME) = to_days(now())
+ 	</if>
+ 	<if test='customerid == "2"'><!-- 昨日的数据  -->
+ 		AND to_days(now()) - to_days(CREATETIME) &lt;= 1
+ 	</if>
+ 	<if test='customerid == "3"'><!-- 本周的数据 -->
+ 		AND YEARWEEK( DATE_FORMAT(CREATETIME,'%Y-%m-%d') ) = YEARWEEK(NOW())
+ 	</if>
+ 	<if test='customerid == "4"'><!-- 本月的数据 -->
+ 		AND DATE_FORMAT(CREATETIME,'%Y%m')  = DATE_FORMAT(CURDATE(),'%Y%m')
+ 	</if>
+ 	<if test='customerid == "5"'><!-- 上月的数据 -->
+ 		AND PERIOD_DIFF(DATE_FORMAT(now(),'%Y%m'),DATE_FORMAT(createtime,'%Y%m'))=1
+ 	</if>
+ 	<if test='customerid == "6"'><!-- 今年的数据 -->
+ 		AND year(CREATETIME)  = year(now())
+ 	</if>
+ 	order by CREATETIME desc
+ </select> 
+
+ <!-- 更改客户分配状态   注意用到了in 传入的customerid参数需要用'()'括起来-->
+ <update id="updCustomerStatus" parameterType="com.icss.bean.TbCustomerAssign">
+ 	UPDATE tb_customer set ASSIGNTYPE = #{status,jdbcType=VARCHAR} WHERE CUSTOMERID in ${customerid}
+ </update>
+
+ <!-- 多条件查询客户数据  -->
+ <select id="condition" resultMap="BaseResultMap" parameterType="com.icss.bean.TbCustomer">
+ 	SELECT ID, CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+	    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+	    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+	    SALARY, ECP, BANK, BANKNO, MEMO, STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD 
+    FROM tb_customer where 1=1 
+ 	  <if test='customername != null and customername !=""' >
+        AND CUSTOMERNAME like '%${customername}%'
+      </if>
+      <if test='telephone != null and telephone != ""' >
+       AND TELEPHONE like '%${telephone}%'
+      </if>
+      <if test='email != null and email != ""' >
+       AND EMAIL like '%${email}%'
+      </if>
+      <if test='school != null and school != ""' >
+       AND SCHOOL like '%${school}%'
+      </if>
+      <if test='major != null and major != ""' >
+       AND MAJOR = #{major,jdbcType=VARCHAR}
+      </if>
+      <if test='education != null and education != ""' >
+       AND EDUCATION = #{education,jdbcType=VARCHAR}
+      </if>
+      <if test='operator != null and operator != ""' >
+       AND  OPERATOR = #{operator,jdbcType=VARCHAR}
+      </if>
+      <if test='collector != null and collector != ""' >
+       AND  COLLECTOR = #{collector,jdbcType=VARCHAR}
+      </if>
+      <if test='source != null and source != ""' >
+       AND  SOURCE = #{source,jdbcType=VARCHAR}
+      </if>
+      <if test='customertype != null and customertype != ""' >
+       AND CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test='course != null and course != ""' >
+       AND COURSE = #{course,jdbcType=VARCHAR}
+      </if>
+      <if test='jobobjective != null and jobobjective !=""' >
+       AND JOBOBJECTIVE = #{jobobjective,jdbcType=VARCHAR}
+      </if>
+      <if test='ecp != null and ecp != ""' >
+       AND ECP = #{ecp,jdbcType=VARCHAR}
+      </if>
+      <if test='assigntype != null and assigntype !=""' >
+       AND ASSIGNTYPE = #{assigntype,jdbcType=VARCHAR}
+      </if>
+ </select>
+ 
+ <!-- 客户数据统计   -->
+ <select id="sourcecount" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 	SELECT COUNT(*) ID,SOURCE from tb_customer WHERE TO_DAYS(CREATETIME) = TO_DAYS(NOW()) AND COLLECTOR=#{_parameter,jdbcType=VARCHAR} GROUP BY SOURCE 
+ </select>
+ <select id="sexcount" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT COUNT(*) ID,SEX from tb_customer WHERE TO_DAYS(CREATETIME) = TO_DAYS(NOW()) AND COLLECTOR=#{_parameter,jdbcType=VARCHAR} GROUP BY SEX 
+ </select>
+ <select id="coursecount" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT COUNT(*) ID,COURSE from tb_customer WHERE TO_DAYS(CREATETIME) = TO_DAYS(NOW()) AND COLLECTOR=#{_parameter,jdbcType=VARCHAR} GROUP BY COURSE 
+ </select>
+ <select id="usercount" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 	SELECT count(*) ID, username CUSTOMERNAME FROM (select CUSTOMERID,userid from tb_customer_assign WHERE TO_DAYS(ASSIGNTIME) = TO_DAYS(NOW()) AND ASSIGNUSERID=#{_parameter,jdbcType=VARCHAR} GROUP BY CUSTOMERID 
+	)a INNER JOIN tb_sys_user u ON. u.userid = a.userid GROUP BY a.userid
+ </select>
+ 
+ 
+ <!-- 查看还没有简历数据的客户  -->
+ <select id="datamate" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 	SELECT ID, CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+    SALARY, ECP, BANK, BANKNO, MEMO, STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD
+    FROM tb_customer 
+    WHERE COLLECTOR=#{_parameter,jdbcType=VARCHAR} AND RESUMEURL IS NULL
+ </select>
+ 
+ <!-- 更新客户简历url -->
+ <update id="resumeUrl" parameterType="com.icss.bean.TbCustomer">
+ 	UPDATE tb_customer SET RESUMEURL = #{resumeurl,jdbcType=VARCHAR} WHERE CUSTOMERID = #{customerid,jdbcType=VARCHAR}
+ </update>
+ 
+ <!-- 主管查看团队客户  -->
+  <!-- 普通客户查看自己的客户信息   -->
+ <!-- 注意：在if test 对字符串进行比较的时候被比较的字符串用双引号 ,customerid只是用来传参数判断需要查询的时间-->
+ <select id="getTeamCustomerinfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+ 	<bind name="deptid" value="_parameter + '%'"/>
+ 	SELECT <include refid="Base_Column_List" /> ,
+		o.username OPERATORTEXT, co.username COLLECTORTEXT
+ 	from tb_customer c
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) o ON c.OPERATOR = o.userid
+	INNER JOIN (SELECT userid, username FROM tb_sys_user) co ON c.COLLECTOR = co.userid
+ 	 WHERE collector in (select userid from tb_sys_user WHERE deptid LIKE #{deptid,jdbcType=VARCHAR})
+ 	AND (ASSIGNTYPE = 0 	or ASSIGNTYPE =2 )
+ 	order by CREATETIME desc
+ </select> 
+ 
+ <!-- 查看所有放弃的客户信息  -->
+<!--  <select id="" resultMap="" parameterType="">
+ 	SELECT ID, CUSTOMERID, CUSTOMERNAME, SEX, TELEPHONE, EMAIL, SCHOOL, MAJOR, EDUCATION, OPERATOR, 
+	    COLLECTOR, CREATETIME, SOURCE, CUSTOMERTYPE, COURSE, JOBOBJECTIVE, BIRTHDAY, PLACEOFBIRTH, 
+	    ADDRESS, POLITICALSTATUS, NATIONALITY, MARITALSTATUS, WORKSERVICE, WORKEXP, WORKPLACE, 
+	    SALARY, ECP, BANK, BANKNO, MEMO, STATUS, ASSIGNTYPE, CLASSIFICATIONSTANDARD 
+	    where status
+ </select> -->
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbPromocodeUseMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbPromocodeUse" >
+    <id column="PROMUSEID" property="promuseid" jdbcType="VARCHAR" />
+    <result column="PROMOCODE" property="promocode" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PROMUSEID, PROMOCODE, ORDERID, CREATETIME, USERID
+  </sql>
+  
+   <!-- 根据序列号对数据库表tb_promocode_use进行查询 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_promocode_use
+    where PROMUSEID = #{promuseid,jdbcType=VARCHAR}
+  </select>
+   <!-- 查询数据库tb_promocode_use所有数据 -->
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_promocode_use
+  </select> 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_promocode_use
+    where PROMUSEID = #{promuseid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbPromocodeUse" >
+    insert into tb_promocode_use (PROMUSEID, PROMOCODE, ORDERID, 
+      CREATETIME, USERID)
+    values ('', #{promocode,jdbcType=VARCHAR}, #{orderid,jdbcType=VARCHAR}, 
+     now(), #{userid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbPromocodeUse" >
+    insert into tb_promocode_use
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="promuseid != null" >
+        PROMUSEID,
+      </if>
+      <if test="promocode != null" >
+        PROMOCODE,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="promuseid != null" >
+        #{promuseid,jdbcType=VARCHAR},
+      </if>
+      <if test="promocode != null" >
+        #{promocode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbPromocodeUse" >
+    update tb_promocode_use
+    <set >
+      <if test="promocode != null" >
+        PROMOCODE = #{promocode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PROMUSEID = #{promuseid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbPromocodeUse" >
+    update tb_promocode_use
+    set PROMOCODE = #{promocode,jdbcType=VARCHAR},
+      ORDERID = #{orderid,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      USERID = #{userid,jdbcType=VARCHAR}
+    where PROMUSEID = #{promuseid,jdbcType=VARCHAR}
+  </update>
+</mapper>

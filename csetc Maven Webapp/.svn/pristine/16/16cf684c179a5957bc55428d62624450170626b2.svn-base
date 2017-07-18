@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbOrderOrderdetailMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbOrderOrderdetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="ORDERNO" property="orderno" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="PRICE" property="price" jdbcType="REAL" />
+    <result column="AMOUNT" property="amount" jdbcType="REAL" />
+    <result column="AMOUNTCOUNT" property="amountcount" jdbcType="REAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ORDERID, ORDERNO, PRODID, PRODNAME, PRICE, AMOUNT, AMOUNTCOUNT, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_orderdetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order_orderdetail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbOrderOrderdetail" >
+    insert into tb_order_orderdetail (ID, ORDERID, ORDERNO, 
+      PRODID, PRODNAME, PRICE, 
+      AMOUNT, AMOUNTCOUNT, STATUS
+      )
+    values ('', #{orderid,jdbcType=VARCHAR}, '', 
+      #{prodid,jdbcType=VARCHAR}, #{prodname,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{amount,jdbcType=REAL}, #{amountcount,jdbcType=REAL}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbOrderOrderdetail" >
+    insert into tb_order_orderdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="orderno != null" >
+        ORDERNO,
+      </if>
+      <if test="prodid != null" >
+        PRODID,
+      </if>
+      <if test="prodname != null" >
+        PRODNAME,
+      </if>
+      <if test="price != null" >
+        PRICE,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="amountcount != null" >
+        AMOUNTCOUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderno != null" >
+        #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="amountcount != null" >
+        #{amountcount,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbOrderOrderdetail" >
+    update tb_order_orderdetail
+    <set >
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderno != null" >
+        ORDERNO = #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=REAL},
+      </if>
+      <if test="amountcount != null" >
+        AMOUNTCOUNT = #{amountcount,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbOrderOrderdetail" >
+    update tb_order_orderdetail
+    set ORDERID = #{orderid,jdbcType=VARCHAR},
+      ORDERNO = #{orderno,jdbcType=VARCHAR},
+      PRODID = #{prodid,jdbcType=VARCHAR},
+      PRODNAME = #{prodname,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=REAL},
+      AMOUNT = #{amount,jdbcType=REAL},
+      AMOUNTCOUNT = #{amountcount,jdbcType=REAL},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 根据订单编号查看订单详情数据  -->
+  <select id="getOrderDetailData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_order_orderdetail
+    where ORDERID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据订单编号删除订单详情  -->
+  <delete id="delOrderDetailByOid" parameterType="java.lang.String">
+  	 delete from tb_order_orderdetail
+    where ORDERID = #{_parameter,jdbcType=VARCHAR}
+  </delete>
+  
+   <!-- 根据订单编号查看订单详情数据  -->
+  <select id="getNotPayOrderDataByOid" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    	 d.ID, d.ORDERID, ORDERNO, d.PRODID, d.PRODNAME, PRICE, d.AMOUNT, IFNULL(sum(p.AMOUNT),0) AMOUNTCOUNT, STATUS
+    from tb_order_orderdetail d 
+    left join tb_order_payment p on d.ORDERID = p.ORDERID and d.PRODID = p.PRODID
+    where d.ORDERID = #{_parameter,jdbcType=VARCHAR}
+    group by ID 
+  </select>
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbSysPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbSysPermission" >
+    <id column="PERMISSIONID" property="permissionid" jdbcType="VARCHAR" />
+    <result column="PERMISSIONNAME" property="permissionname" jdbcType="VARCHAR" />
+    <result column="ACTIONURL" property="actionurl" jdbcType="VARCHAR" />
+    <result column="LEVEL" property="level" jdbcType="VARCHAR" />
+    <result column="ORDERNUM" property="ordernum" jdbcType="VARCHAR" />
+    <result column="PERMISSIONDESC" property="permissiondesc" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PERMISSIONID, PERMISSIONNAME, ACTIONURL, LEVEL, ORDERNUM, PERMISSIONDESC, CREATETIME, 
+    STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_permission
+    where PERMISSIONID = #{permissionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_permission
+    where PERMISSIONID = #{permissionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbSysPermission" >
+    insert into tb_sys_permission (PERMISSIONID, PERMISSIONNAME, ACTIONURL, 
+      LEVEL, ORDERNUM, PERMISSIONDESC, 
+      CREATETIME, STATUS)
+    values (#{permissionid,jdbcType=VARCHAR}, #{permissionname,jdbcType=VARCHAR}, #{actionurl,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{ordernum,jdbcType=VARCHAR}, #{permissiondesc,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbSysPermission" >
+    insert into tb_sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionid != null" >
+        PERMISSIONID,
+      </if>
+      <if test="permissionname != null" >
+        PERMISSIONNAME,
+      </if>
+      <if test="actionurl != null" >
+        ACTIONURL,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="ordernum != null" >
+        ORDERNUM,
+      </if>
+      <if test="permissiondesc != null" >
+        PERMISSIONDESC,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionid != null" >
+        #{permissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionname != null" >
+        #{permissionname,jdbcType=VARCHAR},
+      </if>
+      <if test="actionurl != null" >
+        #{actionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="permissiondesc != null" >
+        #{permissiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbSysPermission" >
+    update tb_sys_permission
+    <set >
+      <if test="permissionname != null" >
+        PERMISSIONNAME = #{permissionname,jdbcType=VARCHAR},
+      </if>
+      <if test="actionurl != null" >
+        ACTIONURL = #{actionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        ORDERNUM = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="permissiondesc != null" >
+        PERMISSIONDESC = #{permissiondesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PERMISSIONID = #{permissionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbSysPermission" >
+    update tb_sys_permission
+    set PERMISSIONNAME = #{permissionname,jdbcType=VARCHAR},
+      ACTIONURL = #{actionurl,jdbcType=VARCHAR},
+      LEVEL = #{level,jdbcType=VARCHAR},
+      ORDERNUM = #{ordernum,jdbcType=VARCHAR},
+      PERMISSIONDESC = #{permissiondesc,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where PERMISSIONID = #{permissionid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查看所有权限  -->
+  <select id="getAllPermission" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_permission order by ORDERNUM
+  </select>
+  
+  <!-- 查看所有角色对应的页面访问权限   -->
+  <select id="allRolePermission" resultMap="BaseResultMap">
+  	SELECT r.ROLEID ACTIONURL, ROLENAME PERMISSIONID,GROUP_CONCAT(PERMISSIONNAME) PERMISSIONNAME, r.`status` FROM tb_sys_role r 
+		LEFT JOIN tb_sys_rolepermission rp ON r.ROLEID = rp.ROLEID
+		LEFT JOIN tb_sys_permission p ON rp.PERMISSIONID = p.PERMISSIONID 				
+		GROUP BY r.ROLEID 
+  </select>  
+  
+  <!-- 查看某角色对应的页面访问权限   -->
+  <select id="oneRolePermission" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT p.PERMISSIONID, PERMISSIONNAME,ROLEID ACTIONURL,rolename PERMISSIONDESC from tb_sys_permission p LEFT JOIN (
+		SELECT a.roleid,rolename,permissionid FROM tb_sys_rolepermission a INNER JOIN tb_sys_role r ON  a.roleid = r.roleid
+	   WHERE a.ROLEID = #{_parameter,jdbcType=VARCHAR}
+	) rp ON p.PERMISSIONID = rp.PERMISSIONID  WHERE p.`status` = '1'
+  </select>
+  
+  <!-- 查看所有权限以及与之对应的操作 -->
+  <select id="allOperpermission" resultMap="BaseResultMap">
+	SELECT PERMISSIONID , LEVEL , PERMISSIONNAME  FROM tb_sys_permission p WHERE p.`status` = '1'
+	UNION
+	SELECT level2id , PERMISSIONID, level2name FROM tb_sys_operpermission op INNER JOIN 
+		(SELECT * from tb_sys_basecode WHERE level1id = '14' AND `STATUS` = '1' ) a ON a.level2id = op.operid
+  </select>
+  
+  <!-- 根据角色查看自己的权限  -->
+  <select id="permissionByRole" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT p.PERMISSIONID,PERMISSIONNAME,LEVEL,OPERID ORDERNUM FROM tb_sys_permission p
+	LEFT JOIN (SELECT * FROM tb_sys_rolepermission WHERE roleid = #{_parameter,jdbcType=VARCHAR} ) rp ON p.PERMISSIONID = rp.PERMISSIONID
+ 	 WHERE p.`status` = '1'
+  </select>
+  
+  <!-- 查看所有权限对应的操作 -->
+  <select id="operPermission" resultMap="BaseResultMap">
+  	SELECT level2id PERMISSIONID, PERMISSIONID LEVEL, level2name PERMISSIONNAME FROM tb_sys_operpermission op INNER JOIN 
+		(SELECT * from tb_sys_basecode WHERE level1id = 14) a ON a.level2id = op.operid
+  </select>
+  
+  <!-- 根据用户查看自己的权限 -->
+   <select id="permissionByUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+   	SELECT p.PERMISSIONID,PERMISSIONNAME,LEVEL,OPERID ORDERNUM  FROM tb_sys_permission p
+	LEFT JOIN (SELECT * FROM tb_sys_userroledetail WHERE userid = #{_parameter,jdbcType=VARCHAR} ) urd ON urd.permissionid = p.permissionid
+	  WHERE p.`status` = '1' order by ORDERNUM
+  </select>
+  
+  <!-- 根据id查看权限 -->
+  <select id="getPermissionDataById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_sys_permission where PERMISSIONID = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

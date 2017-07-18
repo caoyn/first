@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icss.dao.TbOrderOrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.icss.bean.TbOrderOrders" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMERID" property="customerid" jdbcType="VARCHAR" />
+    <result column="CUSTOMERTEXT" property="customertext" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERTEXT" property="usertext" jdbcType="VARCHAR" />
+    <result column="DEPTID" property="deptid" jdbcType="VARCHAR" />
+    <result column="DEPTTEXT" property="depttext" jdbcType="VARCHAR" />
+    <result column="PRODID" property="prodid" jdbcType="VARCHAR" />
+    <result column="PRODNAME" property="prodname" jdbcType="VARCHAR" />
+    <result column="PRICE" property="price" jdbcType="REAL" />
+    <result column="DEPOSIT" property="deposit" jdbcType="REAL" />
+    <result column="DISCOUNT" property="discount" jdbcType="REAL" />
+    <result column="AMOUNT" property="amount" jdbcType="REAL" />
+    <result column="AMOUNTCOUNT" property="amountcount" jdbcType="REAL" />
+    <result column="ORDERTYPE" property="ordertype" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="PROMOCODE" property="promocode" jdbcType="VARCHAR" />
+    <result column="PROMOMONEY" property="promomoney" jdbcType="REAL" />
+    <result column="PAYMETHOD" property="paymethod" jdbcType="VARCHAR" />
+    <result column="PAYMETHODTEXT" property="paymethodtext" jdbcType="VARCHAR" />
+    <result column="BANKINGBOOK" property="bankingbook" jdbcType="VARCHAR" />
+    <result column="BANKINGBOOKNAME" property="bankingbookname" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="APPROVEID" property="approveid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" ><!-- 命名为o -->
+    o.ID, o.CUSTOMERID, ORDERID, o.CREATETIME, o.USERID, o.DEPTID, PRODID, PRODNAME, PRICE, DEPOSIT, 
+    DISCOUNT, AMOUNT, AMOUNTCOUNT, ORDERTYPE, o.STATUS, PROMOCODE, PROMOMONEY, PAYMETHOD, 
+    BANKINGBOOK, ATTACHMENT, o.MEMO, APPROVEID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_orders
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order_orders
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icss.bean.TbOrderOrders" >
+    insert into tb_order_orders (ID, CUSTOMERID, ORDERID, 
+      CREATETIME, USERID, DEPTID, 
+      PRODID, PRODNAME, PRICE, 
+      DEPOSIT, DISCOUNT, AMOUNT, AMOUNTCOUNT, 
+      ORDERTYPE, STATUS, PROMOCODE, 
+      PROMOMONEY, PAYMETHOD, BANKINGBOOK, 
+      ATTACHMENT, MEMO, APPROVEID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{customerid,jdbcType=VARCHAR}, #{orderid,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=VARCHAR}, #{deptid,jdbcType=VARCHAR}, 
+      #{prodid,jdbcType=VARCHAR}, #{prodname,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{deposit,jdbcType=REAL}, #{discount,jdbcType=REAL}, #{amount,jdbcType=REAL}, #{amountcount,jdbcType=REAL}, 
+      #{ordertype,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{promocode,jdbcType=VARCHAR}, 
+      #{promomoney,jdbcType=REAL}, #{paymethod,jdbcType=VARCHAR}, #{bankingbook,jdbcType=VARCHAR}, 
+      #{attachment,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{approveid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.icss.bean.TbOrderOrders" >
+    insert into tb_order_orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="customerid != null" >
+        CUSTOMERID,
+      </if>
+      <if test="orderid != null" >
+        ORDERID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="deptid != null" >
+        DEPTID,
+      </if>
+      <if test="prodid != null" >
+        PRODID,
+      </if>
+      <if test="prodname != null" >
+        PRODNAME,
+      </if>
+      <if test="price != null" >
+        PRICE,
+      </if>
+      <if test="deposit != null" >
+        DEPOSIT,
+      </if>
+      <if test="discount != null" >
+        DISCOUNT,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="amountcount != null" >
+        AMOUNTCOUNT,
+      </if>
+      <if test="ordertype != null" >
+        ORDERTYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="promocode != null" >
+        PROMOCODE,
+      </if>
+      <if test="promomoney != null" >
+        PROMOMONEY,
+      </if>
+      <if test="paymethod != null" >
+        PAYMETHOD,
+      </if>
+      <if test="bankingbook != null" >
+        BANKINGBOOK,
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="approveid != null" >
+        APPROVEID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=REAL},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="amountcount != null" >
+        #{amountcount,jdbcType=REAL},
+      </if>
+      <if test="ordertype != null" >
+        #{ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="promocode != null" >
+        #{promocode,jdbcType=VARCHAR},
+      </if>
+      <if test="promomoney != null" >
+        #{promomoney,jdbcType=REAL},
+      </if>
+      <if test="paymethod != null" >
+        #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bankingbook != null" >
+        #{bankingbook,jdbcType=VARCHAR},
+      </if>
+      <if test="attachment != null" >
+        #{attachment,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icss.bean.TbOrderOrders" >
+    update tb_order_orders
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        ORDERID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        DEPTID = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=REAL},
+      </if>
+      <if test="deposit != null" >
+        DEPOSIT = #{deposit,jdbcType=REAL},
+      </if>
+      <if test="discount != null" >
+        DISCOUNT = #{discount,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=REAL},
+      </if>
+      <if test="amountcount != null" >
+        AMOUNTCOUNT = #{amountcount,jdbcType=REAL},
+      </if>
+      <if test="ordertype != null" >
+        ORDERTYPE = #{ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="promocode != null" >
+        PROMOCODE = #{promocode,jdbcType=VARCHAR},
+      </if>
+      <if test="promomoney != null" >
+        PROMOMONEY = #{promomoney,jdbcType=REAL},
+      </if>
+      <if test="paymethod != null" >
+        PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bankingbook != null" >
+        BANKINGBOOK = #{bankingbook,jdbcType=VARCHAR},
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT = #{attachment,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        APPROVEID = #{approveid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icss.bean.TbOrderOrders" >
+    update tb_order_orders
+    set CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      ORDERID = #{orderid,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      USERID = #{userid,jdbcType=VARCHAR},
+      DEPTID = #{deptid,jdbcType=VARCHAR},
+      PRODID = #{prodid,jdbcType=VARCHAR},
+      PRODNAME = #{prodname,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=REAL},
+      DEPOSIT = #{deposit,jdbcType=REAL},
+      DISCOUNT = #{discount,jdbcType=REAL},
+      AMOUNT = #{amount,jdbcType=REAL},
+      AMOUNTCOUNT = #{amountcount,jdbcType=REAL},
+      ORDERTYPE = #{ordertype,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      PROMOCODE = #{promocode,jdbcType=VARCHAR},
+      PROMOMONEY = #{promomoney,jdbcType=REAL},
+      PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      BANKINGBOOK = #{bankingbook,jdbcType=VARCHAR},
+      ATTACHMENT = #{attachment,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR},
+      APPROVEID = #{approveid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 新增订单 -->
+    <insert id="addOrder" parameterType="com.icss.bean.TbOrderOrders" >
+    insert into tb_order_orders (ID, CUSTOMERID, ORDERID, 
+      CREATETIME, USERID, DEPTID, 
+      PRODID, PRODNAME, PRICE, 
+      DEPOSIT, DISCOUNT, AMOUNT, AMOUNTCOUNT, 
+      ORDERTYPE, STATUS, PROMOCODE, 
+      PROMOMONEY, PAYMETHOD, BANKINGBOOK, 
+      ATTACHMENT, MEMO, APPROVEID
+      )
+    values ('', #{customerid,jdbcType=VARCHAR}, '', 
+     now(), #{userid,jdbcType=VARCHAR}, #{deptid,jdbcType=VARCHAR}, 
+      #{prodid,jdbcType=VARCHAR}, #{prodname,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{deposit,jdbcType=REAL}, #{discount,jdbcType=REAL}, #{amount,jdbcType=REAL}, #{amountcount,jdbcType=REAL}, 
+      #{ordertype,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{promocode,jdbcType=VARCHAR}, 
+      #{promomoney,jdbcType=REAL}, #{paymethod,jdbcType=VARCHAR}, #{bankingbook,jdbcType=VARCHAR}, 
+      #{attachment,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{approveid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <!-- 查看当前插入的订单编号 -->
+  <select id="getOrderid" resultType="java.lang.String">
+  	select F_currval('tb_order_orders_id')
+  </select>
+  
+  <!-- 查看所有的订单 (管理员角色) -->
+  <select id="getAllOrderData" resultMap="BaseResultMap" >
+	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+	ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+    
+  <!-- 二级管理员查看指定部门的订单   -->
+  <select id="getSecondOrderData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		WHERE o.deptid in ${_parameter}
+	ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+  
+  <!-- 部门主管查看本部门及以下部门的订单 -->
+  <select id="getDeptOrderData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	<bind name="deptid" value=" _parameter +'%'"/>
+  	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		WHERE o.deptid like #{deptid,jdbcType=VARCHAR}
+	ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+  
+  <!-- 普通员工查看自己的订单  -->
+  <select id="getMyOrderData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		WHERE o.userid = #{_parameter,jdbcType=VARCHAR}
+	ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+  
+  <!-- 电销主管查看本部门及以下部门的订单 -->
+  <select id="getTelDeptOrderData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		INNER JOIN tb_customer_reservation r ON r.customerid = o.customerid
+		WHERE r.REPORTUSERID in (
+			SELECT userid FROM tb_sys_user WHERE deptid like (SELECT CONCAT(deptid ,'%')FROM tb_sys_user WHERE userid = #{_parameter,jdbcType=VARCHAR})
+		) ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+  <!-- 电话销售查看自己的订单 -->
+   <select id="getTelOrderData" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		INNER JOIN tb_customer_reservation r ON r.customerid = o.customerid
+		WHERE r.REPORTUSERID = #{_parameter,jdbcType=VARCHAR} 
+		ORDER BY o.`STATUS`,o.CREATETIME
+  </select>
+  
+  <!-- 修改订单  -->
+    <update id="updateByOrderid" parameterType="com.icss.bean.TbOrderOrders" >
+    update tb_order_orders
+    <set >
+      <if test="customerid != null" >
+        CUSTOMERID = #{customerid,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        DEPTID = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodid != null" >
+        PRODID = #{prodid,jdbcType=VARCHAR},
+      </if>
+      <if test="prodname != null" >
+        PRODNAME = #{prodname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=REAL},
+      </if>
+      <if test="deposit != null" >
+        DEPOSIT = #{deposit,jdbcType=REAL},
+      </if>
+      <if test="discount != null" >
+        DISCOUNT = #{discount,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=REAL},
+      </if>
+      <if test="amountcount != null" >
+        AMOUNTCOUNT = #{amountcount,jdbcType=REAL},
+      </if>
+      <if test="ordertype != null" >
+        ORDERTYPE = #{ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="promocode != null" >
+        PROMOCODE = #{promocode,jdbcType=VARCHAR},
+      </if>
+      <if test="promomoney != null" >
+        PROMOMONEY = #{promomoney,jdbcType=REAL},
+      </if>
+      <if test="paymethod != null" >
+        PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bankingbook != null" >
+        BANKINGBOOK = #{bankingbook,jdbcType=VARCHAR},
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT = #{attachment,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        APPROVEID = #{approveid,jdbcType=VARCHAR},
+      </if>
+    </set>
+	where ORDERID = #{orderid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据订单编号查看订单数据  -->
+  <select id="getOrderDataByOid" parameterType="java.lang.String" resultType="com.icss.bean.TbOrderOrders">
+  	select <include refid="Base_Column_List" /> from tb_order_orders o where o.orderid = #{_parameter,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据客户编号查看订单数据  -->
+  <select id="getOrderDataByCid" parameterType="java.lang.String" resultType="com.icss.bean.TbOrderOrders">
+  	SELECT  <include refid="Base_Column_List" /> ,c.CUSTOMERNAME CUSTOMERTEXT, u.username USERTEXT, d.deptname DEPTTEXT from 
+	  tb_order_orders o
+		INNER JOIN tb_customer c ON o.customerid = c.CUSTOMERID
+		INNER JOIN tb_sys_user u ON u.userid = o.userid
+		INNER JOIN tb_sys_dept d ON d.deptid = o.deptid
+		where o.customerid = #{_parameter,jdbcType=VARCHAR}
+	ORDER BY o.`STATUS`,o.CREATETIME desc
+  </select>
+  
+  <!-- 查看未收款（未全款）的数据  -->
+  <select id="notPayOrder" resultMap="BaseResultMap">
+  	SELECT  o.ID, o.CUSTOMERID, ORDERID, o.CREATETIME, o.USERID, o.DEPTID, PRODID, PRODNAME, PRICE, DEPOSIT, 
+    DISCOUNT, AMOUNT, AMOUNTCOUNT, ORDERTYPE, o.STATUS, PROMOCODE, PROMOMONEY, PAYMETHOD, 
+    BANKINGBOOK, ATTACHMENT, o.MEMO, APPROVEID , USERNAME USERTEXT, CUSTOMERNAME CUSTOMERTEXT, 
+   	b.level2name BANKINGBOOKNAME, p.level2name PAYMETHODTEXT
+	FROM tb_order_orders o 
+	INNER JOIN tb_sys_user u ON u.USERID = o.USERID 
+	INNER JOIN tb_customer c on o.CUSTOMERID = c.CUSTOMERID
+	INNER JOIN (SELECT level2id,level2name FROM tb_sys_basecode WHERE level1id = '25')p ON p.level2id = o.PAYMETHOD
+	LEFT JOIN (SELECT level2id,level2name FROM tb_sys_basecode WHERE level1id = '26') b ON b.level2id = o.BANKINGBOOK
+	WHERE o.`STATUS` &lt; 1013	
+  </select>
+  
+  <!-- 退返款申请取消  -->
+  <update id="cancelRefund" parameterType="java.lang.String">
+  	update tb_order_orders set status = status+2 where orderid = #{_parameter,jdbcType=VARCHAR}
+  </update>
+</mapper>
