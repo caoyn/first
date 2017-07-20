@@ -1147,6 +1147,7 @@ function uploadCustomerQualification(){
 	    var viewBtn = $(this).parent().next().children(".viewUplQuaBtn");
 	    var uploadBtn = $(this).parent().next().children(".uplQuaBtn");
 	    var fileInput = $(this).children(".uplQuaInp");
+	    var quaMemoLabel = $(this).children("#quaMemoLabel");
 	    //如果没有图片，将查看按钮置为不可点击
 		$.ajax({
 			url : "../CustomerQualification/IsQuaEmpty.do",
@@ -1164,6 +1165,17 @@ function uploadCustomerQualification(){
 						//不可再点
 						$(uploadBtn).attr("disabled", true);
 						$(fileInput).attr("disabled", true);
+						//$(fileInput).remove();
+						$(quaMemoLabel).text('已提交,请等待审核');
+					} else if (data["status"]=="0"){//已上传，审核拒绝
+						//上传按钮变成了提示信息
+						$(uploadBtn).text("上传");//按钮是用text函数
+						//可点
+						$(uploadBtn).attr("disabled", false);
+						$(fileInput).attr("disabled", false);
+						//拒绝信息
+						console.log(data["qualificationMemo"]);
+						$(quaMemoLabel).text('审核拒绝,'+data["qualificationMemo"]);
 					}
 				}
 			},
@@ -1190,6 +1202,8 @@ function uploadPicture(sid) {
 	var theFile = theId + " .uplQuaInp";
 	var viewBtn = $(theFile).parent().parent().next().children(".viewUplQuaBtn");
 	var uploadBtn = $(theFile).parent().parent().next().children(".uplQuaBtn");
+	
+	var quaMemoLabel = $(theId).children("#quaMemoLabel");
 	console.log(viewBtn);
 	if ($(theFile).val()=="") {
 		toastr.warning("请选择文件后再上传");
@@ -1211,6 +1225,8 @@ function uploadPicture(sid) {
 				//不可再点
 				$(uploadBtn).attr("disabled", true);
 				$(theFile).attr("disabled", true);
+				$(theFile).val('');
+				$(quaMemoLabel).text('已提交,请等待审核');
 			} else {
 				
 			} 
@@ -1229,6 +1245,13 @@ function viewPicture(sid){
 	var qualificationTypeId = $(formId).children("#quaTypeIdInput").val();
 	//console.log(orderId+"----"+qualificationTypeId);
 	
+	var src = $("#qualificationPictureImg")[0].src;
+	console.log(src);
+	if (src.indexOf('.') != -1) {
+		
+		console.log(src.indexOf('/',src.indexOf('/',src.indexOf('/',src.indexOf('/')+1)+1)+1));
+		src = src.substring(0,src.indexOf('/',src.indexOf('/',src.indexOf('/',src.indexOf('/')+1)+1)+1));
+	}
 	//请求图片地址
 	$.ajax({
 		url : "../CustomerQualification/GetQuaUrl.do",
@@ -1236,7 +1259,7 @@ function viewPicture(sid){
 		data: {"orderId":orderId,"qualificationTypeId":qualificationTypeId},
 		success : function(data) {
 			if (data["success"]=="true") {
-				$("#qualificationPictureImg").attr('src',$("#qualificationPictureImg")[0].src+data['url']); 
+				$("#qualificationPictureImg").attr('src',src+data['url']); 
 			} else {
 				toastr.error(data['msg']);
 			}
@@ -1246,5 +1269,6 @@ function viewPicture(sid){
 		},
 		dataType : "json"
 	});
+	
 	$("#viewCusQuaModalBox").modal("show");
 }

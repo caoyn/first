@@ -31,6 +31,8 @@
 	}
 	#viewQuaImgDiv img {
 		border:0px solid blue;
+		
+		height: 100%;
 	} 
 </style>
 
@@ -380,15 +382,17 @@
 								
 									<table class="table table-striped table-hover table-responsive table-bordered"  style="text-align: center;margin:auto;">
 										<tr>
-											<td>
+											<td colspan="2">
 												<form id="picUpload${vs.count }" class="picUpload" enctype="multipart/form-data">
 													<label style="float:left;">${qua.level2name }：</label>
 													<input type="hidden" id="orderIdInput" name="orderId"/>
 													<input type="hidden" id="quaTypeIdInput" name="qualificationTypeId" value="${qua.id }" />
 													<input type="file" class="file uplQuaInp" id="uplQuaInp" name="qualificationPicture" />
+													<label id="quaMemoLabel" style="color: red;float:left;"></label>
 												</form>
 											</td>
-											<td>
+											<td colspan="1"> 
+												
 												<button class="btn btn-primary uplQuaBtn" onclick="uploadPicture(${vs.count})">上传</button>
 												<button class="btn btn-info viewUplQuaBtn" onclick="viewPicture(${vs.count})">查看</button>
 											</td>
@@ -413,9 +417,9 @@
 	<!-- 上传客户资质模态框  order id="uploadCusQuaModalBox" -->
 	<div class="modal inmodal" id="viewCusQuaModalBox"> <!-- class="modal inmodal" -->
 		<div class="modal-dialog modal-lg">
-			<div class="modal-content animated fadeIn">
+			<div class="modal-content animated" style="border: 0px solid rgba(0, 0, 0, 0);border-radius: 4px;box-shadow: 0 0px 0px rgba(0, 0, 0, .3);">
 				<div class="modal-header">
-					<a class="close" data-dismiss="modal">X</a>
+					<a class="close" data-dismiss="modal">x</a>
 					<h4 class="modal-title">资质查看</h4>
 				</div>
 				

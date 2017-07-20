@@ -33,6 +33,15 @@ public class CustomerQualification {
 	//订单号
 	public String orderId;
 	
+	
+	/**
+	 * 资质审核页面又加的字段
+	 */
+	//客户姓名
+	public String customerName;
+	//创建(提交)人姓名
+	public String creatorName;
+	
 
 	public String getId() {
 		return id;

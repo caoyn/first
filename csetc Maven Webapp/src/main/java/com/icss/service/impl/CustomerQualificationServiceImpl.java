@@ -54,12 +54,13 @@ public class CustomerQualificationServiceImpl implements ICustomerQualificationS
 			
 			cq.setId(qua.id);
 		}
-		//设置创建人、创建时间、状态
+		//设置创建人、创建时间、状态、审核理由
 		String userId = (String) session.getAttribute("userid");
 		System.out.println("上传客户资质的userId="+userId);
 		cq.setCreator(userId);
 		cq.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		cq.setStatus("2");
+		cq.setQualificationMemo("-");
 		
 		//设置id
 		if (!isUpdate) {
@@ -150,6 +151,7 @@ public class CustomerQualificationServiceImpl implements ICustomerQualificationS
 		} else {
 			map.put("isExist", "true");
 			map.put("status", list.get(0).getStatus());
+			map.put("qualificationMemo", list.get(0).getQualificationMemo());
 		}
 		return map;
 	}
@@ -173,6 +175,13 @@ public class CustomerQualificationServiceImpl implements ICustomerQualificationS
 			map.put("url", list.get(0).getQualificationUrl());
 		}
 		return map;
+	}
+	
+	/**
+	 * 获取资质
+	 */
+	public List<CustomerQualification> query(CustomerQualification cq) {
+		return customerQualificationDao.getQua(cq);
 	}
 	
 }

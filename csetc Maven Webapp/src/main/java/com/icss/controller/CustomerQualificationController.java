@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,5 +52,20 @@ public class CustomerQualificationController {
 	@ResponseBody
 	public Map<String, String> getQuaUrl(CustomerQualification cq) {
 		return customerQulificationService.getQuaUrl(cq);
+	}
+	
+	/**
+	 * 资质上传模块入口展示
+	 */
+	@RequestMapping("/page.do")
+	public String page() {
+		// 指定视图路径 /WEB-INF/jsp/class/apply.jsp
+		return "verify/qualification";
+	}
+	
+	//获得待审核数据
+	@RequestMapping("/query.do")
+	public List<CustomerQualification> query (CustomerQualification cq) {
+		return customerQulificationService.query(cq);
 	}
 }
