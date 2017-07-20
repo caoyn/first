@@ -1,7 +1,6 @@
 package com.icss.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -37,5 +36,20 @@ public class CustomerQualificationController {
 			@RequestParam MultipartFile qualificationPicture, HttpSession session) {
 		
 		return customerQulificationService.uploadCusQua(cq, qualificationPicture, session);
+	}
+	
+	//查看按钮是否可用
+	@RequestMapping("/IsQuaEmpty.do")
+	@ResponseBody
+	public Map<String, String> isQuaEmpty(CustomerQualification cq) {
+		return customerQulificationService.isQuaEmpty(cq);
+	}
+	
+	
+	//获取资质附件地址
+	@RequestMapping("/GetQuaUrl.do")
+	@ResponseBody
+	public Map<String, String> getQuaUrl(CustomerQualification cq) {
+		return customerQulificationService.getQuaUrl(cq);
 	}
 }

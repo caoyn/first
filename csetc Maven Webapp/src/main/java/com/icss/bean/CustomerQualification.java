@@ -22,6 +22,8 @@ public class CustomerQualification {
 	public String qualificationMemo;
 	//资质地址
 	public String qualificationUrl;
+	//状态
+	public String status;
 	
 	//创建人
 	public String creator;
@@ -30,6 +32,7 @@ public class CustomerQualification {
 	
 	//订单号
 	public String orderId;
+	
 
 	public String getId() {
 		return id;
@@ -95,13 +98,22 @@ public class CustomerQualification {
 		this.orderId = orderId;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerQualification [id=" + id + ", customerId=" + customerId + ", qualificationTypeId="
 				+ qualificationTypeId + ", qualificationMemo=" + qualificationMemo + ", qualificationUrl="
-				+ qualificationUrl + ", creator=" + creator + ", createTime=" + createTime + ", orderId=" + orderId
-				+ "]";
+				+ qualificationUrl + ", status=" + status + ", creator=" + creator + ", createTime=" + createTime
+				+ ", orderId=" + orderId + "]";
 	}
+
 	
 	
 }

@@ -20,7 +20,19 @@
 <meta name="keywords" content="湖南中软计算机系统服务有限公司OA系统">
 <meta name="description" content="湖南中软计算机系统服务有限公司OA系统">
 
-
+<style type="text/css">
+	#viewQuaImgDiv {
+		border:0px solid red;
+		width:920px;
+		height:400px;
+		text-align:center;
+		 display: table-cell;
+        vertical-align: middle;
+	}
+	#viewQuaImgDiv img {
+		border:0px solid blue;
+	} 
+</style>
 
 <link rel="<%=basePath%>shortcut icon" href="favicon.ico">
 
@@ -369,16 +381,16 @@
 									<table class="table table-striped table-hover table-responsive table-bordered"  style="text-align: center;margin:auto;">
 										<tr>
 											<td>
-												<form id="picUpload${vs.count }" enctype="multipart/form-data">
+												<form id="picUpload${vs.count }" class="picUpload" enctype="multipart/form-data">
 													<label style="float:left;">${qua.level2name }：</label>
-													<input type="hidden" name="orderId"/>
-													<input type="hidden" name="qualificationTypeId" value="${qua.id }" />
-													<input type="file" class="file" name="qualificationPicture" />
+													<input type="hidden" id="orderIdInput" name="orderId"/>
+													<input type="hidden" id="quaTypeIdInput" name="qualificationTypeId" value="${qua.id }" />
+													<input type="file" class="file uplQuaInp" id="uplQuaInp" name="qualificationPicture" />
 												</form>
 											</td>
 											<td>
-												<button class="btn btn-primary" onclick="uploadPicture(${vs.count})">上传</button>
-												<button class="btn btn-info" onclick="viewPicture()">查看</button>
+												<button class="btn btn-primary uplQuaBtn" onclick="uploadPicture(${vs.count})">上传</button>
+												<button class="btn btn-info viewUplQuaBtn" onclick="viewPicture(${vs.count})">查看</button>
 											</td>
 										</tr>
 									</table>
@@ -388,31 +400,6 @@
 					</div>
 				
 				</c:forEach>
-				<script>
-					function uploadPicture(sid) {
-						var theId = "#picUpload"+sid;
-						var fdata = new FormData($(theId)[0]);
-						$.ajax({
-							url : "${pageContext.request.contextPath}/CustomerQualification/UploadCusQua.do",
-							type : "post",
-							data : fdata,
-							dataType : "json",
-							contentType : false,
-							processData : false,
-							success : function(data) {
-								/* if (data.success == "true") {
-									BUI.Message.Alert("新增成功！");
-								} else {
-									BUI.Message.Alert("新增失败！");
-								} */
-								toastr.success(data['msg']);
-							},
-							error : function() {
-								toastr.error("发生错误，请联系管理员");
-							}
-						});
-					}
-				</script>
 			</div>
 					
 				
@@ -422,7 +409,26 @@
 	
 	
 	
-	
+	<!-- 查看已经上传的文件模态框  order id="viewCusQuaModalBox" -->
+	<!-- 上传客户资质模态框  order id="uploadCusQuaModalBox" -->
+	<div class="modal inmodal" id="viewCusQuaModalBox"> <!-- class="modal inmodal" -->
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content animated fadeIn">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">X</a>
+					<h4 class="modal-title">资质查看</h4>
+				</div>
+				
+			</div>
+			<div id="viewQuaImgDiv" class="modal-body">
+				<img id="qualificationPictureImg"
+					src="${pageContext.request.contextPath }" alt=""
+				/>	
+				
+			</div>	
+		</div>
+	</div>
+	<!-- 查看已经上传的文件模态框结束  -->
 	
 
 	<script src="<%=basePath%>js/jquery.min.js"></script>

@@ -14,6 +14,7 @@ $(document).ready(function(){
 		$(this).select();
 	});
 	
+
 });
 
 //当产品下拉框数据改变时更改子产品数据
@@ -426,10 +427,6 @@ function fillOrderTableData(){
 	        title: '编号',
 	        sortable:true
 	    }, {
-	    	field: 'customerid ',
-	    	title: '客户id',
-	    	sortable:true
-	    },{
 	    	field: 'customertext',
 	    	title: '客户姓名',
 	    	sortable:true
@@ -1128,7 +1125,6 @@ function createTimeaxisData(data){
 }
 
 
-
 //上传客户资质按钮
 function uploadCustomerQualification(){
 	/*
@@ -1143,8 +1139,43 @@ function uploadCustomerQualification(){
 		toastr.warning("请选择一条数据再操作");
 		return false;
 	}
+
+	$(".picUpload").each(function(index, obj){
+		var qualificationTypeId = $(this).children("#quaTypeIdInput").val();
+	    //console.log(orders[0].orderid+"----"+qualificationTypeId)
+	    
+	    var viewBtn = $(this).parent().next().children(".viewUplQuaBtn");
+	    var uploadBtn = $(this).parent().next().children(".uplQuaBtn");
+	    var fileInput = $(this).children(".uplQuaInp");
+	    //如果没有图片，将查看按钮置为不可点击
+		$.ajax({
+			url : "../CustomerQualification/IsQuaEmpty.do",
+			type : "POST",
+			data: {"orderId":orders[0].orderid,"qualificationTypeId":qualificationTypeId},
+			success : function(data) {
+				if (data["isExist"]=="false") {//如果没有上传图片，也就是不存在，查看按钮置为不可用
+					//全部
+					//$(".viewUplQuaBtn").attr("disabled", true); 
+					viewBtn.attr("disabled",true);
+				} else {
+					if (data["status"]=="2"){//已上传，待审核
+						//上传按钮变成了提示信息
+						$(uploadBtn).text("待审核");//按钮是用text函数
+						//不可再点
+						$(uploadBtn).attr("disabled", true);
+						$(fileInput).attr("disabled", true);
+					}
+				}
+			},
+			error: function() {
+				toastr.error("获取是否显示查看按钮发生错误，请联系管理员");
+			},
+			dataType : "json"
+		});
+	});
+	
+	//设置orderid
 	var inputs = document.getElementsByTagName('input');
-    
     for(var i = 0; i < inputs.length; i++){
         if(inputs[i].name == 'orderId'){
         	inputs[i].value = orders[0].orderid;
@@ -1153,4 +1184,67 @@ function uploadCustomerQualification(){
 	$("#uploadCusQuaModalBox").modal("show");
 }
 
+//上传客户资质图片
+function uploadPicture(sid) {
+	var theId = "#picUpload"+sid;
+	var theFile = theId + " .uplQuaInp";
+	var viewBtn = $(theFile).parent().parent().next().children(".viewUplQuaBtn");
+	var uploadBtn = $(theFile).parent().parent().next().children(".uplQuaBtn");
+	console.log(viewBtn);
+	if ($(theFile).val()=="") {
+		toastr.warning("请选择文件后再上传");
+		return false;
+	}
+	var fdata = new FormData($(theId)[0]);
+	$.ajax({
+		url : "../CustomerQualification/UploadCusQua.do",
+		type : "post",
+		data : fdata,
+		dataType : "json",
+		contentType : false,
+		processData : false,
+		success : function(data) {
+			if (data.success == "true") {
+				$(viewBtn).attr("disabled", false);
+				//上传按钮变成了提示信息
+				$(uploadBtn).text("待审核");//按钮是用text函数
+				//不可再点
+				$(uploadBtn).attr("disabled", true);
+				$(theFile).attr("disabled", true);
+			} else {
+				
+			} 
+			toastr.success(data['msg']);
+		},
+		error : function() {
+			toastr.error("发生错误，请联系管理员");
+		}
+	});
+}
 
+//查看图片
+function viewPicture(sid){
+	var formId = "#picUpload"+sid;
+	var orderId = $(formId).children("#orderIdInput").val();
+	var qualificationTypeId = $(formId).children("#quaTypeIdInput").val();
+	//console.log(orderId+"----"+qualificationTypeId);
+	
+	//请求图片地址
+	$.ajax({
+		url : "../CustomerQualification/GetQuaUrl.do",
+		type : "POST",
+		data: {"orderId":orderId,"qualificationTypeId":qualificationTypeId},
+		success : function(data) {
+			if (data["success"]=="true") {
+				$("#qualificationPictureImg").attr('src',$("#qualificationPictureImg")[0].src+data['url']); 
+			} else {
+				toastr.error(data['msg']);
+			}
+		},
+		error: function() {
+			toastr.error("获取资质附件地址发生错误，请联系管理员");
+		},
+		dataType : "json"
+	});
+	$("#viewCusQuaModalBox").modal("show");
+}

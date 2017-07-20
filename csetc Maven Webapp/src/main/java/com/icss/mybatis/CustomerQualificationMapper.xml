@@ -17,6 +17,7 @@
 		<result column="AMEMO" property="qualificationMemo" />
 		<!-- 资质地址 -->
 		<result column="AURL" property="qualificationUrl" />
+		<result column="STATUS" property="status" />
 
 		<!-- 创建人  -->
 		<result column="CREATOR" property="creator" />
@@ -27,9 +28,85 @@
 		<result column="ORDERID" property="orderId" />
 	</resultMap>
 	
+	
+	<sql id="CustomerQualificationColume">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="customerId != null">CUSTOMERID,</if>
+            <if test="qualificationTypeId != null">ATYPE,</if>
+            <if test="qualificationMemo != null">AMEMO,</if>
+            <if test="qualificationUrl != null">AURL,</if>
+            <if test="creator != null">CREATOR,</if>
+            <if test="createTime != null">CREATETIME,</if>
+            <if test="status != null">STATUS,</if>
+        </trim>
+    </sql>
+
+
+    <sql id="CustomerQualificationValue">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="qualificationTypeId != null">#{qualificationTypeId},</if>
+            <if test="qualificationMemo != null">#{qualificationMemo},</if>
+            <if test="qualificationUrl != null">#{qualificationUrl},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </sql>
+    
+    <sql id="selectCondition">
+    	<if test="id != null and id != ''">and ID=#{id}</if>
+        <if test="customerId != null and customerId != ''">and CUSTOMERID=#{customerId}</if>
+        <if test="qualificationTypeId != null and qualificationTypeId != ''">and ATYPE=#{qualificationTypeId}</if>
+        <if test="qualificationMemo != null and qualificationMemo != ''">and AMEMO=#{qualificationMemo}</if>
+        <if test="qualificationUrl != null and qualificationUrl != ''">and AURL=#{qualificationUrl}</if>
+        <if test="creator != null and creator != ''">and CREATOR=#{creator}</if>
+        <if test="createTime != null and createTime != ''">and CREATETIME=#{createTime}</if>
+        <if test="status != null and status != ''">and STATUS=#{status}</if>
+    </sql>
+    
+     <sql id="updateCondition">
+	     <trim suffix="" suffixOverrides=",">
+	        <if test="customerId != null and customerId != ''">CUSTOMERID=#{customerId},</if>
+	        <if test="qualificationTypeId != null and qualificationTypeId != ''">ATYPE=#{qualificationTypeId},</if>
+	        <if test="qualificationMemo != null and qualificationMemo != ''">AMEMO=#{qualificationMemo},</if>
+	        <if test="qualificationUrl != null and qualificationUrl != ''">AURL=#{qualificationUrl},</if>
+	        <if test="creator != null and creator != ''">CREATOR=#{creator},</if>
+	        <if test="createTime != null and createTime != ''">CREATETIME=#{createTime},</if>
+	        <if test="status != null and status != ''">STATUS=#{status},</if>
+        </trim>
+    </sql>
+	
 	<!-- 通过订单号匹配出客户id getCusIdByOrderId(String orderId); -->
 	<select id="getCusIdByOrderId" parameterType="java.lang.String" resultType="java.lang.String">
 		select CUSTOMERID from tb_order_orders where ORDERID=#{orderId}
 	</select>
 	
+	<!-- Integer save(CustomerQualification cq); -->
+	<insert id="save"  parameterType="com.icss.bean.CustomerQualification">
+        insert into tb_customer_attachment (<include refid="CustomerQualificationColume"/>) 
+        values (<include refid="CustomerQualificationValue"/>)
+    </insert>
+	
+	<!-- String getCurDateMaxId(String curDate); -->
+	<select id="getCurDateMaxId" parameterType="java.lang.String" resultType="java.lang.String">
+		select max(ID) from tb_customer_attachment where ID like '%${value}%';
+	</select>
+	
+	<!-- 通过制定条件获取资质(附件)记录 List<CustomerQualification> getQua(CustomerQualification cq); -->
+	<select id="getQua" parameterType="com.icss.bean.CustomerQualification" resultMap="customerQualification">
+		select * from tb_customer_attachment 
+		<where>
+			<include refid="selectCondition"/>
+		</where>
+	</select>
+	
+	<!-- 更新资质(附件),要求是保证唯一！ Integer update(CustomerQualification cq); -->
+	<update id="update" parameterType="com.icss.bean.CustomerQualification">
+		update tb_customer_attachment set
+		<include refid="updateCondition"/>
+		where ID=#{id}
+	</update>
 </mapper>
